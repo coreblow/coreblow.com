@@ -1,16 +1,26 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { CoreHubCatalogSchemaValidator } from "./corehub-schema-validator.mjs";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const generatedPath = resolve(repoRoot, "src/corehub-catalog.generated.js");
 const localCoreHubCatalogPath = resolve(repoRoot, "../corehub/catalog.json");
+const localCoreHubSchemaPath = resolve(repoRoot, "../corehub/schemas/corehub.catalog.schema.json");
 const remoteCoreHubCatalogUrl =
   "https://raw.githubusercontent.com/coreblow/corehub/main/catalog.json";
+const remoteCoreHubSchemaUrl =
+  "https://raw.githubusercontent.com/coreblow/corehub/main/schemas/corehub.catalog.schema.json";
 
 const isCheck = process.argv.includes("--check");
 
 const catalog = await readCanonicalCatalog();
+const schema = await readCanonicalSchema();
+const schemaErrors = new CoreHubCatalogSchemaValidator(schema).validate(catalog);
+if (schemaErrors.length > 0) {
+  for (const error of schemaErrors) console.error(error);
+  process.exit(1);
+}
 const generated = renderCatalogModule(catalog);
 
 if (isCheck) {
@@ -27,25 +37,33 @@ if (isCheck) {
 }
 
 async function readCanonicalCatalog() {
+  return readLocalJsonWithRemoteFallback(localCoreHubCatalogPath, remoteCoreHubCatalogUrl, "catalog");
+}
+
+async function readCanonicalSchema() {
+  return readLocalJsonWithRemoteFallback(localCoreHubSchemaPath, remoteCoreHubSchemaUrl, "schema");
+}
+
+async function readLocalJsonWithRemoteFallback(localPath, remoteUrl, label) {
   try {
-    const raw = await readFile(localCoreHubCatalogPath, "utf8");
-    return parseCatalog(raw, localCoreHubCatalogPath);
+    const raw = await readFile(localPath, "utf8");
+    return parseJson(raw, localPath, label);
   } catch (error) {
     if (!isMissingPathError(error)) throw error;
   }
 
-  const response = await fetch(remoteCoreHubCatalogUrl, {
+  const response = await fetch(remoteUrl, {
     headers: { "User-Agent": "coreblow.com-corehub-sync" },
   });
   if (!response.ok) {
-    throw new Error(`Unable to fetch ${remoteCoreHubCatalogUrl}: HTTP ${response.status}`);
+    throw new Error(`Unable to fetch ${remoteUrl}: HTTP ${response.status}`);
   }
-  return parseCatalog(await response.text(), remoteCoreHubCatalogUrl);
+  return parseJson(await response.text(), remoteUrl, label);
 }
 
-function parseCatalog(raw, source) {
+function parseJson(raw, source, label) {
   const parsed = JSON.parse(raw);
-  if (!Array.isArray(parsed)) {
+  if (label === "catalog" && !Array.isArray(parsed)) {
     throw new Error(`CoreHub catalog from ${source} must be an array`);
   }
   return parsed;

@@ -56,6 +56,7 @@ npm run check
 ### Sync CoreHub
 
 `corehub/catalog.json` is the canonical directory source. This repository serves a generated copy for `https://coreblow.com/corehub/catalog.json`.
+The sync check also validates the catalog against `corehub/schemas/corehub.catalog.schema.json`.
 
 ```sh
 npm run sync:corehub

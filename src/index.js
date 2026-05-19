@@ -1,3 +1,5 @@
+import { COREHUB_CATALOG } from "./corehub-catalog.generated.js";
+
 const HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -829,30 +831,6 @@ const DEV_HTML = `<!DOCTYPE html>
   </main>
 </body>
 </html>`;
-
-const COREHUB_CATALOG = [
-  {
-    id: "coreblow",
-    kind: "plugin",
-    name: "CoreBlow Bundled Plugins",
-    summary: "Bundled plugin source shipped with the CoreBlow core runtime.",
-    source: "https://github.com/coreblow/coreblow",
-  },
-  {
-    id: "corehub-directory",
-    kind: "skill",
-    name: "CoreHub Directory Metadata",
-    summary: "Reference skill entry documenting CoreHub submission, review, and search metadata.",
-    source: "https://github.com/coreblow/corehub",
-  },
-  {
-    id: "plugin-lab",
-    kind: "plugin",
-    name: "Plugin Lab",
-    summary: "Compatibility lab for CoreBlow community plugins and plugin API contracts.",
-    source: "https://github.com/coreblow/plugin-lab",
-  },
-];
 
 const COREHUB_HTML = `<!DOCTYPE html>
 <html lang="en">

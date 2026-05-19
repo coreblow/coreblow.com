@@ -13,5 +13,5 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "22"
-      - name: Check worker syntax
-        run: node --input-type=module --check < src/index.js
+      - name: Check worker and CoreHub catalog drift
+        run: npm run check

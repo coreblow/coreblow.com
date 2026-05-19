@@ -47,6 +47,20 @@ This repository follows the same ecosystem split that CoreBlow uses to keep rele
 npm run dev
 ```
 
+### Check
+
+```sh
+npm run check
+```
+
+### Sync CoreHub
+
+`corehub/catalog.json` is the canonical directory source. This repository serves a generated copy for `https://coreblow.com/corehub/catalog.json`.
+
+```sh
+npm run sync:corehub
+```
+
 ### Deploy
 
 ```sh

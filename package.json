@@ -4,8 +4,10 @@
   "description": "CoreBlow public website and install landing surface",
   "main": "index.js",
   "scripts": {
+    "check": "node --input-type=module --check < src/index.js && node scripts/sync-corehub-catalog.mjs --check",
     "dev": "npx wrangler dev",
-    "deploy": "npx wrangler deploy"
+    "deploy": "npx wrangler deploy",
+    "sync:corehub": "node scripts/sync-corehub-catalog.mjs"
   },
   "keywords": [
     "ai",

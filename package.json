@@ -1,0 +1,20 @@
+{
+  "name": "coreblow.com",
+  "version": "1.0.0",
+  "description": "CoreBlow public website and install landing surface",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx wrangler dev",
+    "deploy": "npx wrangler deploy"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "coreblow",
+    "self-hosted",
+    "website"
+  ],
+  "author": "Febrinanda and CoreBlow contributors",
+  "license": "MIT",
+  "type": "commonjs"
+}

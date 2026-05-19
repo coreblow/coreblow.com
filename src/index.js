@@ -830,6 +830,365 @@ const DEV_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
+const COREHUB_CATALOG = [
+  {
+    id: "coreblow",
+    kind: "plugin",
+    name: "CoreBlow Bundled Plugins",
+    summary: "Bundled plugin source shipped with the CoreBlow core runtime.",
+    source: "https://github.com/coreblow/coreblow",
+  },
+  {
+    id: "corehub-directory",
+    kind: "skill",
+    name: "CoreHub Directory Metadata",
+    summary: "Reference skill entry documenting CoreHub submission, review, and search metadata.",
+    source: "https://github.com/coreblow/corehub",
+  },
+  {
+    id: "plugin-lab",
+    kind: "plugin",
+    name: "Plugin Lab",
+    summary: "Compatibility lab for CoreBlow community plugins and plugin API contracts.",
+    source: "https://github.com/coreblow/plugin-lab",
+  },
+];
+
+const COREHUB_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoreHub | CoreBlow Skill and Plugin Directory</title>
+  <meta name="description" content="CoreHub is the CoreBlow directory for skills, plugins, providers, channels, review metadata, and compatibility information." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-2: #eef2f7;
+      --text: #111827;
+      --muted: #5b6472;
+      --line: #d9e0ea;
+      --accent: #0f766e;
+      --accent-2: #1d4ed8;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      width: min(1160px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 750;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #111827;
+      color: #fff;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav a {
+      text-decoration: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 42px;
+      align-items: center;
+      padding: 70px 0 54px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(44px, 7vw, 76px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 24px 0 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 19px;
+      line-height: 1.65;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+    }
+
+    .button.primary {
+      border-color: #111827;
+      background: #111827;
+      color: #fff;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr);
+      gap: 16px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .row:last-child { border-bottom: 0; }
+
+    .kind {
+      width: fit-content;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: #e0f2fe;
+      color: #075985;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .kind.plugin {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .entry-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .entry-copy {
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .section {
+      padding: 34px 0;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .tile {
+      min-height: 170px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 22px;
+    }
+
+    .tile h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .tile p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .footer {
+      margin-top: 34px;
+      padding: 26px 0 34px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 860px) {
+      .topbar {
+        align-items: flex-start;
+        gap: 18px;
+        flex-direction: column;
+      }
+
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 42px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="mark">CB</span>
+        <span>CoreBlow</span>
+      </a>
+      <nav class="nav" aria-label="CoreHub navigation">
+        <a href="/corehub">CoreHub</a>
+        <a href="https://github.com/coreblow/corehub">GitHub</a>
+        <a href="https://docs.coreblow.com">Docs</a>
+        <a href="/health">Status</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">CoreHub Directory</p>
+          <h1>Skills and plugins for the CoreBlow runtime.</h1>
+          <p class="lead">
+            CoreHub is the public directory contract for CoreBlow skills, plugins, providers, channels, review metadata, and compatibility information.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/coreblow/corehub">View Repository</a>
+            <a class="button" href="/corehub/catalog.json">Catalog JSON</a>
+          </div>
+        </div>
+
+        <aside class="panel" aria-label="Featured CoreHub entries">
+          <div class="panel-head">
+            <span>Featured entries</span>
+            <span>verified</span>
+          </div>
+          ${COREHUB_CATALOG.map(
+            (entry) => `<div class="row">
+              <div><span class="kind ${entry.kind}">${entry.kind}</span></div>
+              <div>
+                <p class="entry-title">${entry.name}</p>
+                <p class="entry-copy">${entry.summary}</p>
+              </div>
+            </div>`,
+          ).join("")}
+        </aside>
+      </section>
+
+      <section class="section" aria-label="CoreHub capabilities">
+        <h2>Directory surfaces</h2>
+        <div class="grid">
+          <article class="tile">
+            <h3>Skills</h3>
+            <p>Agent instruction packs with declared runtime requirements, review metadata, and deterministic fingerprints.</p>
+          </article>
+          <article class="tile">
+            <h3>Plugins</h3>
+            <p>CoreBlow extension metadata for bundled and community plugin surfaces without moving canonical source ownership.</p>
+          </article>
+          <article class="tile">
+            <h3>Compatibility</h3>
+            <p>Version, platform, provider, channel, and review state data designed for CI and future hosted APIs.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">CoreHub lives at coreblow.com/corehub and is maintained in github.com/coreblow/corehub.</footer>
+  </div>
+</body>
+</html>`;
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -865,6 +1224,24 @@ export default {
         headers: {
           'Content-Type': 'image/svg+xml;charset=UTF-8',
           'Cache-Control': 'no-store',
+        },
+      });
+    }
+
+    if (url.pathname === '/corehub/catalog.json') {
+      return new Response(JSON.stringify(COREHUB_CATALOG, null, 2), {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Cache-Control': 'public, max-age=300',
+        },
+      });
+    }
+
+    if (url.pathname === '/corehub' || url.pathname === '/corehub/') {
+      return new Response(COREHUB_HTML, {
+        headers: {
+          'Content-Type': 'text/html;charset=UTF-8',
+          'Cache-Control': 'public, max-age=300',
         },
       });
     }

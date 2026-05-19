@@ -20,6 +20,7 @@ This repository follows the same ecosystem split that CoreBlow uses to keep rele
 
 - Website worker source.
 - Install landing content.
+- CoreHub public directory surface at `https://coreblow.com/corehub`.
 - Public links to docs and the core repository.
 
 ## Out of Scope
@@ -61,6 +62,7 @@ Version changes must follow the coordinated CoreBlow release plan.
 ## Links
 
 - [CoreBlow](https://github.com/coreblow/coreblow)
+- [CoreHub](https://coreblow.com/corehub)
 - [Documentation](https://docs.coreblow.com)
 - [Website](https://coreblow.com)
 - [Security Policy](SECURITY.md)

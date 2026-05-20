@@ -192,7 +192,7 @@ export const COREHUB_CATALOG = [
           "storage": {
             "provider": "github-raw",
             "key": "artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz",
-            "url": "https://raw.githubusercontent.com/coreblow/corehub/main/artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz"
+            "url": "https://raw.githubusercontent.com/coreblow/corehub/9670d51fb8aafa8f3a34c17813bab0dd4dce4a12/artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz"
           },
           "provenance": {
             "source": "https://github.com/coreblow/plugin-lab",

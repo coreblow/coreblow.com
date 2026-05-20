@@ -21,6 +21,7 @@ This repository follows the same ecosystem split that CoreBlow uses to keep rele
 - Website worker source.
 - Install landing content.
 - CoreHub public directory surface at `https://coreblow.com/corehub`.
+- CoreHub Registry API v1 at `https://coreblow.com/corehub/api/v1`.
 - Public links to docs and the core repository.
 
 ## Out of Scope
@@ -60,6 +61,19 @@ The sync check also validates the catalog against `corehub/schemas/corehub.catal
 
 ```sh
 npm run sync:corehub
+```
+
+### CoreHub Registry API
+
+The first read-only Registry API is served from the same generated catalog:
+
+```text
+https://coreblow.com/corehub/api/v1
+https://coreblow.com/corehub/api/v1/catalog
+https://coreblow.com/corehub/api/v1/entries
+https://coreblow.com/corehub/api/v1/search?q=plugin
+https://coreblow.com/corehub/api/v1/packages
+https://coreblow.com/corehub/api/v1/packages/search?q=plugin
 ```
 
 ### Deploy

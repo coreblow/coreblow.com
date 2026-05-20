@@ -853,7 +853,7 @@ const coreHubEntriesHtml = COREHUB_CATALOG.map((entry) => {
   const tags = Array.isArray(entry.tags) ? entry.tags : [];
   const capabilities = Array.isArray(entry.capabilities) ? entry.capabilities : [];
   const platforms = Array.isArray(entry.coreblow?.platforms) ? entry.coreblow.platforms : [];
-  const sourceUrl = entry.source?.url ?? "";
+  const sourceUrl = getCoreHubSourceUrl(entry);
   const homepageUrl = entry.homepage ?? sourceUrl;
   const reviewState = entry.review?.state ?? "review";
   const minVersion = entry.coreblow?.minCoreblowVersion ?? "not declared";
@@ -907,6 +907,203 @@ function escapeAttr(value) {
 function capitalize(value) {
   const text = String(value);
   return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function getCoreHubSourceUrl(entry) {
+  if (typeof entry.source === "string") return entry.source;
+  if (entry.source && typeof entry.source.url === "string") return entry.source.url;
+  return "";
+}
+
+function normalizeCoreHubEntry(entry, options = {}) {
+  const sourceUrl = getCoreHubSourceUrl(entry);
+  const record = {
+    id: entry.id,
+    kind: entry.kind,
+    name: entry.name,
+    summary: entry.summary,
+    source: sourceUrl,
+    homepage: entry.homepage ?? sourceUrl,
+    version: entry.version ?? null,
+    tags: Array.isArray(entry.tags) ? entry.tags : [],
+    capabilities: Array.isArray(entry.capabilities) ? entry.capabilities : [],
+    review: entry.review ?? null,
+    coreblow: entry.coreblow ?? null,
+    links: {
+      self: `/corehub/api/v1/entries/${encodeURIComponent(entry.id)}`,
+      package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
+      versions: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/versions`,
+    },
+  };
+
+  if (options.score !== undefined) {
+    record.score = options.score;
+  }
+
+  return record;
+}
+
+function listCoreHubEntries(options = {}) {
+  const kind = options.kind;
+  return COREHUB_CATALOG
+    .filter((entry) => !kind || entry.kind === kind)
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map((entry) => normalizeCoreHubEntry(entry));
+}
+
+function findCoreHubEntry(id) {
+  const entry = COREHUB_CATALOG.find((item) => item.id === id);
+  return entry ? normalizeCoreHubEntry(entry) : null;
+}
+
+function searchCoreHubEntries(query, options = {}) {
+  const terms = tokenizeCoreHubQuery(query);
+  const kind = options.kind;
+  const limit = parseCoreHubLimit(options.limit);
+  if (terms.length === 0) return [];
+
+  return COREHUB_CATALOG
+    .filter((entry) => !kind || entry.kind === kind)
+    .map((entry) => ({ entry, score: scoreCoreHubEntry(entry, terms) }))
+    .filter((result) => result.score > 0)
+    .sort((a, b) => b.score - a.score || a.entry.id.localeCompare(b.entry.id))
+    .slice(0, limit)
+    .map((result) => normalizeCoreHubEntry(result.entry, { score: result.score }));
+}
+
+function tokenizeCoreHubQuery(query) {
+  return String(query ?? "")
+    .toLowerCase()
+    .split(/[^a-z0-9-]+/)
+    .map((term) => term.trim())
+    .filter(Boolean);
+}
+
+function scoreCoreHubEntry(entry, terms) {
+  const searchable = [
+    entry.id,
+    entry.kind,
+    entry.name,
+    entry.summary,
+    ...(Array.isArray(entry.tags) ? entry.tags : []),
+    ...(Array.isArray(entry.capabilities) ? entry.capabilities : []),
+    ...(Array.isArray(entry.coreblow?.platforms) ? entry.coreblow.platforms : []),
+    entry.review?.state,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  let score = 0;
+  for (const term of terms) {
+    if (entry.id === term) score += 10;
+    if (entry.kind === term) score += 5;
+    if (searchable.includes(term)) score += 2;
+  }
+  return score;
+}
+
+function parseCoreHubLimit(value) {
+  const parsed = Number.parseInt(String(value ?? "25"), 10);
+  if (!Number.isInteger(parsed) || parsed < 1) return 25;
+  return Math.min(parsed, 100);
+}
+
+function coreHubJson(data, options = {}) {
+  const body = {
+    apiVersion: "v1",
+    data,
+    meta: {
+      count: Array.isArray(data) ? data.length : data === null ? 0 : 1,
+      ...options.meta,
+    },
+  };
+
+  return new Response(JSON.stringify(body, null, 2), {
+    status: options.status ?? 200,
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Cache-Control": options.cacheControl ?? "public, max-age=300",
+    },
+  });
+}
+
+function coreHubNotFound(message) {
+  return coreHubJson(
+    { error: "not_found", message },
+    { status: 404, cacheControl: "public, max-age=60", meta: { count: 0 } },
+  );
+}
+
+function handleCoreHubApi(url) {
+  const path = url.pathname.replace(/\/+$/, "");
+  const apiRoot = "/corehub/api/v1";
+
+  if (path === apiRoot) {
+    return coreHubJson({
+      name: "CoreHub Registry API",
+      registry: "https://coreblow.com/corehub",
+      catalog: "/corehub/api/v1/catalog",
+      entries: "/corehub/api/v1/entries",
+      search: "/corehub/api/v1/search?q=plugin",
+      packages: "/corehub/api/v1/packages",
+    });
+  }
+
+  if (path === `${apiRoot}/catalog` || path === `${apiRoot}/entries`) {
+    const kind = url.searchParams.get("kind") || undefined;
+    const entries = listCoreHubEntries({ kind });
+    return coreHubJson(entries, { meta: { kind: kind ?? "all" } });
+  }
+
+  if (path === `${apiRoot}/search` || path === `${apiRoot}/packages/search`) {
+    const query = url.searchParams.get("q") ?? "";
+    const kind = url.searchParams.get("kind") || undefined;
+    const results = searchCoreHubEntries(query, {
+      kind,
+      limit: url.searchParams.get("limit"),
+    });
+    return coreHubJson(results, { meta: { query, kind: kind ?? "all" } });
+  }
+
+  if (path === `${apiRoot}/packages`) {
+    const family = url.searchParams.get("family");
+    const kind = family === "skill" ? "skill" : url.searchParams.get("kind") || undefined;
+    const entries = listCoreHubEntries({ kind });
+    return coreHubJson(entries, { meta: { kind: kind ?? "all" } });
+  }
+
+  const entryMatch = path.match(/^\/corehub\/api\/v1\/entries\/([^/]+)$/);
+  if (entryMatch) {
+    const id = decodeURIComponent(entryMatch[1]);
+    const entry = findCoreHubEntry(id);
+    return entry ? coreHubJson(entry) : coreHubNotFound(`CoreHub entry not found: ${id}`);
+  }
+
+  const packageMatch = path.match(/^\/corehub\/api\/v1\/packages\/([^/]+)$/);
+  if (packageMatch) {
+    const id = decodeURIComponent(packageMatch[1]);
+    const entry = findCoreHubEntry(id);
+    return entry ? coreHubJson(entry) : coreHubNotFound(`CoreHub package not found: ${id}`);
+  }
+
+  const packageVersionsMatch = path.match(/^\/corehub\/api\/v1\/packages\/([^/]+)\/versions$/);
+  if (packageVersionsMatch) {
+    const id = decodeURIComponent(packageVersionsMatch[1]);
+    const entry = findCoreHubEntry(id);
+    if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
+    return coreHubJson([
+      {
+        id: entry.id,
+        version: entry.version,
+        tag: "latest",
+        review: entry.review,
+        source: entry.source,
+      },
+    ]);
+  }
+
+  return coreHubNotFound(`CoreHub API route not found: ${url.pathname}`);
 }
 
 const COREHUB_HTML = `<!DOCTYPE html>
@@ -1551,6 +1748,10 @@ export default {
           'Cache-Control': 'no-store',
         },
       });
+    }
+
+    if (url.pathname === '/corehub/api/v1' || url.pathname.startsWith('/corehub/api/v1/')) {
+      return handleCoreHubApi(url);
     }
 
     if (url.pathname === '/corehub/catalog.json') {

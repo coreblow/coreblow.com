@@ -832,6 +832,83 @@ const DEV_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
+const coreHubKinds = ["all", "skill", "plugin", "provider", "channel"];
+
+const coreHubKindCounts = COREHUB_CATALOG.reduce(
+  (counts, entry) => {
+    counts.all += 1;
+    counts[entry.kind] = (counts[entry.kind] ?? 0) + 1;
+    return counts;
+  },
+  { all: 0, skill: 0, plugin: 0, provider: 0, channel: 0 },
+);
+
+const coreHubFilterHtml = coreHubKinds.map((kind) => {
+  const active = kind === "all" ? " active" : "";
+  const count = coreHubKindCounts[kind] ?? 0;
+  return `<button class="filter-button${active}" type="button" data-filter="${kind}" aria-pressed="${kind === "all"}">${capitalize(kind)} <span>${count}</span></button>`;
+}).join("");
+
+const coreHubEntriesHtml = COREHUB_CATALOG.map((entry) => {
+  const tags = Array.isArray(entry.tags) ? entry.tags : [];
+  const capabilities = Array.isArray(entry.capabilities) ? entry.capabilities : [];
+  const platforms = Array.isArray(entry.coreblow?.platforms) ? entry.coreblow.platforms : [];
+  const sourceUrl = entry.source?.url ?? "";
+  const homepageUrl = entry.homepage ?? sourceUrl;
+  const reviewState = entry.review?.state ?? "review";
+  const minVersion = entry.coreblow?.minCoreblowVersion ?? "not declared";
+  const searchText = [
+    entry.id,
+    entry.kind,
+    entry.name,
+    entry.summary,
+    tags.join(" "),
+    capabilities.join(" "),
+    platforms.join(" "),
+    reviewState,
+  ].join(" ").toLowerCase();
+
+  return `<article class="entry-card" data-kind="${escapeAttr(entry.kind)}" data-search="${escapeAttr(searchText)}">
+    <div class="entry-card-head">
+      <span class="kind ${escapeAttr(entry.kind)}">${escapeHtml(entry.kind)}</span>
+      <span class="review">${escapeHtml(reviewState)}</span>
+    </div>
+    <h3>${escapeHtml(entry.name)}</h3>
+    <p class="entry-summary">${escapeHtml(entry.summary)}</p>
+    <dl class="entry-meta">
+      <div><dt>Version</dt><dd>${escapeHtml(entry.version ?? "unversioned")}</dd></div>
+      <div><dt>CoreBlow</dt><dd>${escapeHtml(minVersion)}</dd></div>
+      <div><dt>Platforms</dt><dd>${escapeHtml(platforms.length ? platforms.join(", ") : "not declared")}</dd></div>
+    </dl>
+    <div class="tag-list" aria-label="${escapeAttr(entry.name)} tags">
+      ${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}
+    </div>
+    <div class="capability-list" aria-label="${escapeAttr(entry.name)} capabilities">
+      ${capabilities.map((capability) => `<span>${escapeHtml(capability)}</span>`).join("")}
+    </div>
+    <div class="entry-links">
+      ${homepageUrl ? `<a href="${escapeAttr(homepageUrl)}">Homepage</a>` : ""}
+      ${sourceUrl ? `<a href="${escapeAttr(sourceUrl)}">Source</a>` : ""}
+    </div>
+  </article>`;
+}).join("");
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/"/g, "&quot;");
+}
+
+function capitalize(value) {
+  const text = String(value);
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 const COREHUB_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1041,6 +1118,209 @@ const COREHUB_HTML = `<!DOCTYPE html>
       letter-spacing: 0;
     }
 
+    .section-intro {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .directory-toolbar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      margin-top: 22px;
+    }
+
+    .search-box {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      padding: 0 14px;
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+    }
+
+    .search-box:focus {
+      outline: 2px solid rgba(15, 118, 110, 0.2);
+      border-color: var(--accent);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .filter-button {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+      padding: 0 12px;
+      cursor: pointer;
+    }
+
+    .filter-button span {
+      color: #334155;
+      margin-left: 4px;
+    }
+
+    .filter-button.active {
+      border-color: #111827;
+      background: #111827;
+      color: #fff;
+    }
+
+    .filter-button.active span {
+      color: #dbeafe;
+    }
+
+    .directory-status {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .entry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .entry-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 360px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    .entry-card[hidden] {
+      display: none;
+    }
+
+    .entry-card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .entry-card h3 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .entry-summary {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .review {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .entry-meta {
+      display: grid;
+      gap: 8px;
+      margin: 18px 0 0;
+      padding: 0;
+    }
+
+    .entry-meta div {
+      display: grid;
+      grid-template-columns: 82px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .entry-meta dt {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .entry-meta dd {
+      margin: 0;
+      color: var(--text);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .tag-list,
+    .capability-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .tag-list span,
+    .capability-list span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      border-radius: 999px;
+      padding: 0 9px;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .tag-list span {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .capability-list span {
+      background: #ecfdf5;
+      color: #166534;
+    }
+
+    .entry-links {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 18px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .entry-links a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    .empty-state {
+      margin-top: 18px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      padding: 22px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1094,6 +1374,18 @@ const COREHUB_HTML = `<!DOCTYPE html>
       .grid {
         grid-template-columns: 1fr;
       }
+
+      .directory-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-group {
+        justify-content: flex-start;
+      }
+
+      .entry-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -1143,6 +1435,22 @@ const COREHUB_HTML = `<!DOCTYPE html>
         </aside>
       </section>
 
+      <section class="section" aria-label="CoreHub directory">
+        <h2>Directory</h2>
+        <p class="section-intro">Browse reviewed CoreBlow skills, plugins, providers, and channels from the canonical CoreHub catalog.</p>
+        <div class="directory-toolbar">
+          <input class="search-box" id="corehub-search" type="search" placeholder="Search CoreHub" aria-label="Search CoreHub entries" autocomplete="off" />
+          <div class="filter-group" aria-label="Filter CoreHub entries">
+            ${coreHubFilterHtml}
+          </div>
+        </div>
+        <p class="directory-status" id="corehub-status"></p>
+        <div class="entry-grid" id="corehub-entries">
+          ${coreHubEntriesHtml}
+        </div>
+        <p class="empty-state" id="corehub-empty" hidden>No CoreHub entries match the current view.</p>
+      </section>
+
       <section class="section" aria-label="CoreHub capabilities">
         <h2>Directory surfaces</h2>
         <div class="grid">
@@ -1164,6 +1472,45 @@ const COREHUB_HTML = `<!DOCTYPE html>
 
     <footer class="footer">CoreHub lives at coreblow.com/corehub and is maintained in github.com/coreblow/corehub.</footer>
   </div>
+  <script>
+    const searchInput = document.querySelector("#corehub-search");
+    const statusNode = document.querySelector("#corehub-status");
+    const emptyNode = document.querySelector("#corehub-empty");
+    const cards = Array.from(document.querySelectorAll(".entry-card"));
+    const buttons = Array.from(document.querySelectorAll(".filter-button"));
+    let activeKind = "all";
+
+    function updateDirectory() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const kindMatches = activeKind === "all" || card.dataset.kind === activeKind;
+        const queryMatches = !query || card.dataset.search.includes(query);
+        const show = kindMatches && queryMatches;
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      statusNode.textContent = visible === 1 ? "1 entry" : visible + " entries";
+      emptyNode.hidden = visible !== 0;
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeKind = button.dataset.filter;
+        buttons.forEach((item) => {
+          const isActive = item === button;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+        updateDirectory();
+      });
+    });
+
+    searchInput.addEventListener("input", updateDirectory);
+    updateDirectory();
+  </script>
 </body>
 </html>`;
 

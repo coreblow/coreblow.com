@@ -1095,6 +1095,16 @@ function coreHubNotImplemented(data, meta = {}) {
   );
 }
 
+function coreHubForbidden(data, meta = {}) {
+  return coreHubJson(
+    {
+      error: "download_forbidden",
+      ...data,
+    },
+    { status: 403, cacheControl: "no-store", meta: { count: 0, ...meta } },
+  );
+}
+
 function normalizeCoreHubVersion(entry) {
   return listCoreHubVersions(entry)[0] ?? null;
 }
@@ -1170,6 +1180,7 @@ function normalizeCoreHubArtifact(entry, options = {}) {
       reason: artifact?.downloadEnabled
         ? null
         : "CoreHub artifact manifests are available, but binary downloads are not enabled yet.",
+      storage: artifact?.storage ?? null,
     },
     links: {
       package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
@@ -1193,7 +1204,116 @@ function findCoreHubVersion(entry, requested) {
   return versions.find((version) => version.version === target || version.tag === target) ?? null;
 }
 
-function handleCoreHubApi(url) {
+async function signCoreHubDownloadUrl(entry, versionRecord, env) {
+  const artifact = versionRecord?.artifact;
+  const storageUrl = artifact?.storage?.url;
+  if (!storageUrl) return null;
+
+  const expires = Math.floor(Date.now() / 1000) + 300;
+  const payload = [
+    entry.id,
+    versionRecord.version,
+    artifact.sha256,
+    artifact.storage.key,
+    expires,
+  ].join(":");
+  const keyText = env?.COREHUB_DOWNLOAD_SIGNING_KEY ?? artifact.sha256;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(keyText),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signatureBytes = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(payload),
+  );
+  const signature = [...new Uint8Array(signatureBytes)]
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+  const signedUrl = new URL(storageUrl);
+  signedUrl.searchParams.set("corehub_expires", String(expires));
+  signedUrl.searchParams.set("corehub_signature", signature);
+  return {
+    url: signedUrl.toString(),
+    expires,
+    signature,
+    signaturePayload: payload,
+  };
+}
+
+async function coreHubDownloadResponse(url, entry, version, env) {
+  const versionRecord = findCoreHubVersion(entry, version);
+  const artifact = versionRecord?.artifact ?? null;
+  const packageInfo = {
+    id: entry.id,
+    kind: entry.kind,
+    name: entry.name,
+  };
+  const data = {
+    package: packageInfo,
+    version,
+    publisher: versionRecord?.publisher ?? null,
+    artifact,
+  };
+
+  if (!artifact) {
+    return coreHubNotImplemented(
+      { ...data, message: "CoreHub package version does not have an artifact manifest." },
+      { package: entry.id, version },
+    );
+  }
+
+  if (versionRecord.status !== "available" || !artifact.downloadEnabled) {
+    return coreHubForbidden(
+      {
+        ...data,
+        message: "CoreHub artifact downloads are not enabled for this version.",
+        download: { available: false, reason: versionRecord.status },
+      },
+      { package: entry.id, version },
+    );
+  }
+
+  const signed = await signCoreHubDownloadUrl(entry, versionRecord, env);
+  if (!signed) {
+    return coreHubNotImplemented(
+      { ...data, message: "CoreHub artifact is available but has no storage URL." },
+      { package: entry.id, version },
+    );
+  }
+
+  const download = {
+    available: true,
+    redirect: true,
+    url: signed.url,
+    expires: signed.expires,
+    signature: signed.signature,
+  };
+  if (url.searchParams.get("redirect") === "false") {
+    return coreHubJson({ ...data, download }, {
+      cacheControl: "no-store",
+      meta: { package: entry.id, version },
+    });
+  }
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: signed.url,
+      "Cache-Control": "no-store",
+      "X-CoreHub-Package": entry.id,
+      "X-CoreHub-Version": version,
+      "X-CoreHub-Artifact-Sha256": artifact.sha256,
+      "X-CoreHub-Download-Expires": String(signed.expires),
+      "X-CoreHub-Download-Signature": signed.signature,
+    },
+  });
+}
+
+async function handleCoreHubApi(url, env) {
   const path = url.pathname.replace(/\/+$/, "");
   const apiRoot = "/corehub/api/v1";
 
@@ -1299,19 +1419,7 @@ function handleCoreHubApi(url) {
     if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
     const version = readCoreHubVersion(url, entry);
     if (!version) return coreHubNotFound(`CoreHub package version not found: ${id}`);
-    return coreHubNotImplemented(
-      {
-        package: {
-          id: entry.id,
-          kind: entry.kind,
-          name: entry.name,
-        },
-        version,
-        publisher: findCoreHubVersion(entry, version)?.publisher ?? null,
-        artifact: findCoreHubVersion(entry, version)?.artifact ?? null,
-      },
-      { package: id, version },
-    );
+    return coreHubDownloadResponse(url, entry, version, env);
   }
 
   if (path === `${apiRoot}/download`) {
@@ -1326,19 +1434,7 @@ function handleCoreHubApi(url) {
     if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
     const version = readCoreHubVersion(url, entry);
     if (!version) return coreHubNotFound(`CoreHub package version not found: ${id}`);
-    return coreHubNotImplemented(
-      {
-        package: {
-          id: entry.id,
-          kind: entry.kind,
-          name: entry.name,
-        },
-        version,
-        publisher: findCoreHubVersion(entry, version)?.publisher ?? null,
-        artifact: findCoreHubVersion(entry, version)?.artifact ?? null,
-      },
-      { package: id, version },
-    );
+    return coreHubDownloadResponse(url, entry, version, env);
   }
 
   return coreHubNotFound(`CoreHub API route not found: ${url.pathname}`);
@@ -1989,7 +2085,7 @@ export default {
     }
 
     if (url.pathname === '/corehub/api/v1' || url.pathname.startsWith('/corehub/api/v1/')) {
-      return handleCoreHubApi(url);
+      return handleCoreHubApi(url, env);
     }
 
     if (url.pathname === '/corehub/catalog.json') {

@@ -48,13 +48,18 @@ export const COREHUB_CATALOG = [
         "publisher": {
           "handle": "coreblow"
         },
-        "status": "metadata-only",
+        "status": "available",
         "artifact": {
           "name": "coreblow-1.0.0.corehub-manifest.json",
           "mediaType": "application/vnd.coreblow.corehub.manifest+json",
-          "size": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "downloadEnabled": false,
+          "size": 224,
+          "sha256": "53062b4761f16935c3d6121ab57a8c97403c6a15fd0c866437af8e5d7c0b3e64",
+          "downloadEnabled": true,
+          "storage": {
+            "provider": "github-raw",
+            "key": "artifacts/coreblow-1.0.0.corehub-manifest.json",
+            "url": "https://raw.githubusercontent.com/coreblow/corehub/main/artifacts/coreblow-1.0.0.corehub-manifest.json"
+          },
           "provenance": {
             "source": "https://github.com/coreblow/coreblow",
             "reviewState": "verified"
@@ -110,13 +115,18 @@ export const COREHUB_CATALOG = [
         "publisher": {
           "handle": "coreblow"
         },
-        "status": "metadata-only",
+        "status": "available",
         "artifact": {
           "name": "corehub-directory-0.1.0.corehub-manifest.json",
           "mediaType": "application/vnd.coreblow.corehub.manifest+json",
-          "size": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "downloadEnabled": false,
+          "size": 232,
+          "sha256": "b8a8ec1c45932e11131927c8e1aa8bdcb2adbd42b97b7fad9e271575ae98f820",
+          "downloadEnabled": true,
+          "storage": {
+            "provider": "github-raw",
+            "key": "artifacts/corehub-directory-0.1.0.corehub-manifest.json",
+            "url": "https://raw.githubusercontent.com/coreblow/corehub/main/artifacts/corehub-directory-0.1.0.corehub-manifest.json"
+          },
           "provenance": {
             "source": "https://github.com/coreblow/corehub",
             "reviewState": "verified"
@@ -172,13 +182,18 @@ export const COREHUB_CATALOG = [
         "publisher": {
           "handle": "coreblow"
         },
-        "status": "metadata-only",
+        "status": "available",
         "artifact": {
           "name": "plugin-lab-0.1.0.corehub-manifest.json",
           "mediaType": "application/vnd.coreblow.corehub.manifest+json",
-          "size": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "downloadEnabled": false,
+          "size": 228,
+          "sha256": "6cff5dda1d4e54dff6c706947acdacf6cc3a4442d649424181bdde3bd2630373",
+          "downloadEnabled": true,
+          "storage": {
+            "provider": "github-raw",
+            "key": "artifacts/plugin-lab-0.1.0.corehub-manifest.json",
+            "url": "https://raw.githubusercontent.com/coreblow/corehub/main/artifacts/plugin-lab-0.1.0.corehub-manifest.json"
+          },
           "provenance": {
             "source": "https://github.com/coreblow/plugin-lab",
             "reviewState": "verified"

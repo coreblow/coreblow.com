@@ -927,6 +927,7 @@ function normalizeCoreHubEntry(entry, options = {}) {
     version: entry.version ?? null,
     tags: Array.isArray(entry.tags) ? entry.tags : [],
     capabilities: Array.isArray(entry.capabilities) ? entry.capabilities : [],
+    publisher: entry.publisher ?? null,
     review: entry.review ?? null,
     coreblow: entry.coreblow ?? null,
     links: {
@@ -944,6 +945,48 @@ function normalizeCoreHubEntry(entry, options = {}) {
   }
 
   return record;
+}
+
+function normalizeCoreHubPublisher(publisher) {
+  if (!publisher?.handle) return null;
+  const entries = COREHUB_CATALOG
+    .filter((entry) => entry.publisher?.handle === publisher.handle)
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map((entry) => ({
+      id: entry.id,
+      kind: entry.kind,
+      name: entry.name,
+      links: {
+        entry: `/corehub/api/v1/entries/${encodeURIComponent(entry.id)}`,
+        package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
+      },
+    }));
+
+  return {
+    handle: publisher.handle,
+    displayName: publisher.displayName,
+    url: publisher.url,
+    verified: Boolean(publisher.verified),
+    contact: publisher.contact ?? null,
+    entries,
+    links: {
+      self: `/corehub/api/v1/publishers/${encodeURIComponent(publisher.handle)}`,
+    },
+  };
+}
+
+function listCoreHubPublishers() {
+  const publishers = new Map();
+  for (const entry of COREHUB_CATALOG) {
+    const publisher = entry.publisher;
+    if (!publisher?.handle || publishers.has(publisher.handle)) continue;
+    publishers.set(publisher.handle, normalizeCoreHubPublisher(publisher));
+  }
+  return [...publishers.values()].filter(Boolean).sort((a, b) => a.handle.localeCompare(b.handle));
+}
+
+function findCoreHubPublisher(handle) {
+  return listCoreHubPublishers().find((publisher) => publisher.handle === handle) ?? null;
 }
 
 function listCoreHubEntries(options = {}) {
@@ -991,6 +1034,8 @@ function scoreCoreHubEntry(entry, terms) {
     ...(Array.isArray(entry.tags) ? entry.tags : []),
     ...(Array.isArray(entry.capabilities) ? entry.capabilities : []),
     ...(Array.isArray(entry.coreblow?.platforms) ? entry.coreblow.platforms : []),
+    entry.publisher?.handle,
+    entry.publisher?.displayName,
     entry.review?.state,
   ]
     .filter(Boolean)
@@ -1128,6 +1173,7 @@ function handleCoreHubApi(url) {
       entries: "/corehub/api/v1/entries",
       search: "/corehub/api/v1/search?q=plugin",
       packages: "/corehub/api/v1/packages",
+      publishers: "/corehub/api/v1/publishers",
       files: "/corehub/api/v1/packages/plugin-lab/files",
       artifact: "/corehub/api/v1/packages/plugin-lab/artifact",
       download: "/corehub/api/v1/packages/plugin-lab/download",
@@ -1155,6 +1201,17 @@ function handleCoreHubApi(url) {
     const kind = family === "skill" ? "skill" : url.searchParams.get("kind") || undefined;
     const entries = listCoreHubEntries({ kind });
     return coreHubJson(entries, { meta: { kind: kind ?? "all" } });
+  }
+
+  if (path === `${apiRoot}/publishers`) {
+    return coreHubJson(listCoreHubPublishers());
+  }
+
+  const publisherMatch = path.match(/^\/corehub\/api\/v1\/publishers\/([^/]+)$/);
+  if (publisherMatch) {
+    const handle = decodeURIComponent(publisherMatch[1]);
+    const publisher = findCoreHubPublisher(handle);
+    return publisher ? coreHubJson(publisher) : coreHubNotFound(`CoreHub publisher not found: ${handle}`);
   }
 
   const entryMatch = path.match(/^\/corehub\/api\/v1\/entries\/([^/]+)$/);

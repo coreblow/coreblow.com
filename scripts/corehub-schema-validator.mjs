@@ -26,6 +26,10 @@ export class CoreHubCatalogSchemaValidator {
     }
     if (schema.type === "string") {
       this.validateString(schema, value, path, errors);
+      return;
+    }
+    if (schema.type === "boolean") {
+      this.validateBoolean(value, path, errors);
     }
   }
 
@@ -84,6 +88,12 @@ export class CoreHubCatalogSchemaValidator {
     }
     if (schema.pattern && !new RegExp(schema.pattern).test(value)) {
       errors.push(`${path} must match ${schema.pattern}`);
+    }
+  }
+
+  validateBoolean(value, path, errors) {
+    if (typeof value !== "boolean") {
+      errors.push(`${path} must be a boolean`);
     }
   }
 

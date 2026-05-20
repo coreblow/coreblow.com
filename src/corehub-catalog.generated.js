@@ -20,6 +20,13 @@ export const COREHUB_CATALOG = [
       "channel integrations",
       "provider integrations"
     ],
+    "publisher": {
+      "handle": "coreblow",
+      "displayName": "CoreBlow",
+      "url": "https://github.com/coreblow",
+      "verified": true,
+      "contact": "https://github.com/coreblow/coreblow/security/policy"
+    },
     "review": {
       "state": "verified",
       "checkedAt": "2026-05-19",
@@ -52,6 +59,13 @@ export const COREHUB_CATALOG = [
       "directory search",
       "review metadata"
     ],
+    "publisher": {
+      "handle": "coreblow",
+      "displayName": "CoreBlow",
+      "url": "https://github.com/coreblow",
+      "verified": true,
+      "contact": "https://github.com/coreblow/corehub/security/policy"
+    },
     "review": {
       "state": "verified",
       "checkedAt": "2026-05-19",
@@ -84,6 +98,13 @@ export const COREHUB_CATALOG = [
       "compatibility checks",
       "contract validation"
     ],
+    "publisher": {
+      "handle": "coreblow",
+      "displayName": "CoreBlow",
+      "url": "https://github.com/coreblow",
+      "verified": true,
+      "contact": "https://github.com/coreblow/plugin-lab/security/policy"
+    },
     "review": {
       "state": "verified",
       "checkedAt": "2026-05-19",

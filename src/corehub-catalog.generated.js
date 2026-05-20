@@ -186,13 +186,13 @@ export const COREHUB_CATALOG = [
         "artifact": {
           "name": "plugin-lab-0.1.0.coreblow-plugin.tgz",
           "mediaType": "application/vnd.coreblow.plugin-archive+gzip",
-          "size": 433,
-          "sha256": "d4cdd76bd21b2c6217f5738a0ca50f9a60bedd84e1a779ca360e63260fc3299b",
+          "size": 480,
+          "sha256": "36ad1e6bbca0510f24293b464bb4bfb80ef29d4e0027b10c3f2e411b49c8cfbb",
           "downloadEnabled": true,
           "storage": {
             "provider": "github-raw",
             "key": "artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz",
-            "url": "https://raw.githubusercontent.com/coreblow/corehub/9670d51fb8aafa8f3a34c17813bab0dd4dce4a12/artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz"
+            "url": "https://raw.githubusercontent.com/coreblow/corehub/162b500571a1411d646d49cbc3993fbbe2bfa824/artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz"
           },
           "provenance": {
             "source": "https://github.com/coreblow/plugin-lab",
@@ -201,8 +201,8 @@ export const COREHUB_CATALOG = [
           "files": [
             {
               "path": "coreblow.plugin.json",
-              "size": 147,
-              "sha256": "8b238efe0bb0963196eeb08dda670272614a04f55b541642f8d2043c353ebefc"
+              "size": 227,
+              "sha256": "dbc9ff05f2b965f5822172c9ec8a6b98b09d1f869e5b75da33b0a8a75af4ab07"
             },
             {
               "path": "index.js",

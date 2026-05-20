@@ -933,6 +933,9 @@ function normalizeCoreHubEntry(entry, options = {}) {
       self: `/corehub/api/v1/entries/${encodeURIComponent(entry.id)}`,
       package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
       versions: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/versions`,
+      files: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/files`,
+      artifact: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/artifact`,
+      download: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/download`,
     },
   };
 
@@ -1035,6 +1038,84 @@ function coreHubNotFound(message) {
   );
 }
 
+function coreHubNotImplemented(data, meta = {}) {
+  return coreHubJson(
+    {
+      error: "not_implemented",
+      message: "CoreHub file downloads require version artifact storage, integrity metadata, and publisher identity.",
+      ...data,
+    },
+    { status: 501, cacheControl: "public, max-age=60", meta: { count: 0, ...meta } },
+  );
+}
+
+function normalizeCoreHubVersion(entry) {
+  return {
+    id: entry.id,
+    version: entry.version,
+    tag: "latest",
+    review: entry.review,
+    source: entry.source,
+    files: [],
+    artifact: null,
+    links: {
+      files: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/files`,
+      artifact: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/artifact`,
+      download: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/download`,
+    },
+  };
+}
+
+function normalizeCoreHubFileList(entry, options = {}) {
+  return {
+    package: {
+      id: entry.id,
+      kind: entry.kind,
+      name: entry.name,
+    },
+    version: options.version ?? entry.version ?? null,
+    files: [],
+    artifact: null,
+    links: {
+      package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
+      versions: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/versions`,
+      download: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/download`,
+    },
+  };
+}
+
+function normalizeCoreHubArtifact(entry, options = {}) {
+  const version = options.version ?? entry.version ?? null;
+  return {
+    package: {
+      id: entry.id,
+      kind: entry.kind,
+      name: entry.name,
+    },
+    version,
+    artifact: null,
+    files: [],
+    download: {
+      available: false,
+      reason: "CoreHub static catalog entries do not include downloadable artifacts yet.",
+    },
+    links: {
+      package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
+      files: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/files`,
+      download: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/download`,
+    },
+  };
+}
+
+function readCoreHubVersion(url, entry) {
+  const requested = url.searchParams.get("version")?.trim() || url.searchParams.get("tag")?.trim();
+  const current = entry.version ?? null;
+  if (!requested || requested === "latest" || requested === current) {
+    return current;
+  }
+  return null;
+}
+
 function handleCoreHubApi(url) {
   const path = url.pathname.replace(/\/+$/, "");
   const apiRoot = "/corehub/api/v1";
@@ -1047,6 +1128,9 @@ function handleCoreHubApi(url) {
       entries: "/corehub/api/v1/entries",
       search: "/corehub/api/v1/search?q=plugin",
       packages: "/corehub/api/v1/packages",
+      files: "/corehub/api/v1/packages/plugin-lab/files",
+      artifact: "/corehub/api/v1/packages/plugin-lab/artifact",
+      download: "/corehub/api/v1/packages/plugin-lab/download",
     });
   }
 
@@ -1092,15 +1176,78 @@ function handleCoreHubApi(url) {
     const id = decodeURIComponent(packageVersionsMatch[1]);
     const entry = findCoreHubEntry(id);
     if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
-    return coreHubJson([
+    return coreHubJson([normalizeCoreHubVersion(entry)]);
+  }
+
+  const packageFilesMatch = path.match(/^\/corehub\/api\/v1\/packages\/([^/]+)\/files$/);
+  if (packageFilesMatch) {
+    const id = decodeURIComponent(packageFilesMatch[1]);
+    const entry = findCoreHubEntry(id);
+    if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
+    const version = readCoreHubVersion(url, entry);
+    if (!version) return coreHubNotFound(`CoreHub package version not found: ${id}`);
+    return coreHubJson(normalizeCoreHubFileList(entry, { version }), {
+      meta: { package: id, version, filesAvailable: false },
+    });
+  }
+
+  const packageArtifactMatch = path.match(/^\/corehub\/api\/v1\/packages\/([^/]+)\/artifact$/);
+  if (packageArtifactMatch) {
+    const id = decodeURIComponent(packageArtifactMatch[1]);
+    const entry = findCoreHubEntry(id);
+    if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
+    const version = readCoreHubVersion(url, entry);
+    if (!version) return coreHubNotFound(`CoreHub package version not found: ${id}`);
+    return coreHubJson(normalizeCoreHubArtifact(entry, { version }), {
+      meta: { package: id, version, artifactAvailable: false },
+    });
+  }
+
+  const packageDownloadMatch = path.match(/^\/corehub\/api\/v1\/packages\/([^/]+)\/download$/);
+  if (packageDownloadMatch) {
+    const id = decodeURIComponent(packageDownloadMatch[1]);
+    const entry = findCoreHubEntry(id);
+    if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
+    const version = readCoreHubVersion(url, entry);
+    if (!version) return coreHubNotFound(`CoreHub package version not found: ${id}`);
+    return coreHubNotImplemented(
       {
-        id: entry.id,
-        version: entry.version,
-        tag: "latest",
-        review: entry.review,
-        source: entry.source,
+        package: {
+          id: entry.id,
+          kind: entry.kind,
+          name: entry.name,
+        },
+        version,
+        artifact: null,
       },
-    ]);
+      { package: id, version },
+    );
+  }
+
+  if (path === `${apiRoot}/download`) {
+    const id = url.searchParams.get("id")?.trim() || url.searchParams.get("package")?.trim();
+    if (!id) {
+      return coreHubJson(
+        { error: "validation_error", message: "Missing id or package query parameter." },
+        { status: 400, cacheControl: "public, max-age=60", meta: { count: 0 } },
+      );
+    }
+    const entry = findCoreHubEntry(id);
+    if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
+    const version = readCoreHubVersion(url, entry);
+    if (!version) return coreHubNotFound(`CoreHub package version not found: ${id}`);
+    return coreHubNotImplemented(
+      {
+        package: {
+          id: entry.id,
+          kind: entry.kind,
+          name: entry.name,
+        },
+        version,
+        artifact: null,
+      },
+      { package: id, version },
+    );
   }
 
   return coreHubNotFound(`CoreHub API route not found: ${url.pathname}`);

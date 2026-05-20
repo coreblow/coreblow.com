@@ -186,13 +186,13 @@ export const COREHUB_CATALOG = [
         "artifact": {
           "name": "plugin-lab-0.1.0.coreblow-plugin.tgz",
           "mediaType": "application/vnd.coreblow.plugin-archive+gzip",
-          "size": 480,
-          "sha256": "36ad1e6bbca0510f24293b464bb4bfb80ef29d4e0027b10c3f2e411b49c8cfbb",
+          "size": 736,
+          "sha256": "4de3b0826298645b080a471904b5bfb7731aaed67a6b6da2bad26402e91a6c90",
           "downloadEnabled": true,
           "storage": {
             "provider": "github-raw",
             "key": "artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz",
-            "url": "https://raw.githubusercontent.com/coreblow/corehub/162b500571a1411d646d49cbc3993fbbe2bfa824/artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz"
+            "url": "https://raw.githubusercontent.com/coreblow/corehub/b184ccee4dc283abf850d880f971ef103ddb2ab8/artifacts/plugin-lab-0.1.0.coreblow-plugin.tgz"
           },
           "provenance": {
             "source": "https://github.com/coreblow/plugin-lab",
@@ -201,8 +201,13 @@ export const COREHUB_CATALOG = [
           "files": [
             {
               "path": "coreblow.plugin.json",
-              "size": 227,
-              "sha256": "dbc9ff05f2b965f5822172c9ec8a6b98b09d1f869e5b75da33b0a8a75af4ab07"
+              "size": 337,
+              "sha256": "726d9d5ef53490c05d40f33982e25f5e084538b0589e1d3b460ddd947179051f"
+            },
+            {
+              "path": "corehub.artifact.json",
+              "size": 317,
+              "sha256": "bac3f563399ae127442545d08f20c0c178e89723f00fec50d6fb8b89b1165bbc"
             },
             {
               "path": "index.js",
@@ -211,8 +216,8 @@ export const COREHUB_CATALOG = [
             },
             {
               "path": "package.json",
-              "size": 135,
-              "sha256": "4d3cfb38ee00d15fa9f23cf0fc9bb72afd258c9c2b371c9d05a342f391eb9079"
+              "size": 434,
+              "sha256": "72de8ecd9700d93d772d792e2015c9c3574df25579719e54c39d6dcc52e02475"
             },
             {
               "path": "README.md",

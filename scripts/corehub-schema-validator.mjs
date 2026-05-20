@@ -30,6 +30,10 @@ export class CoreHubCatalogSchemaValidator {
     }
     if (schema.type === "boolean") {
       this.validateBoolean(value, path, errors);
+      return;
+    }
+    if (schema.type === "integer") {
+      this.validateInteger(schema, value, path, errors);
     }
   }
 
@@ -94,6 +98,16 @@ export class CoreHubCatalogSchemaValidator {
   validateBoolean(value, path, errors) {
     if (typeof value !== "boolean") {
       errors.push(`${path} must be a boolean`);
+    }
+  }
+
+  validateInteger(schema, value, path, errors) {
+    if (!Number.isInteger(value)) {
+      errors.push(`${path} must be an integer`);
+      return;
+    }
+    if (Number.isInteger(schema.minimum) && value < schema.minimum) {
+      errors.push(`${path} must be at least ${schema.minimum}`);
     }
   }
 

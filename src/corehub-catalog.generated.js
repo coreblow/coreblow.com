@@ -39,7 +39,30 @@ export const COREHUB_CATALOG = [
         "macos",
         "windows"
       ]
-    }
+    },
+    "versions": [
+      {
+        "version": "1.0.0",
+        "tag": "latest",
+        "publishedAt": "2026-05-20",
+        "publisher": {
+          "handle": "coreblow"
+        },
+        "status": "metadata-only",
+        "artifact": {
+          "name": "coreblow-1.0.0.corehub-manifest.json",
+          "mediaType": "application/vnd.coreblow.corehub.manifest+json",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "downloadEnabled": false,
+          "provenance": {
+            "source": "https://github.com/coreblow/coreblow",
+            "reviewState": "verified"
+          },
+          "files": []
+        }
+      }
+    ]
   },
   {
     "id": "corehub-directory",
@@ -78,7 +101,30 @@ export const COREHUB_CATALOG = [
         "macos",
         "windows"
       ]
-    }
+    },
+    "versions": [
+      {
+        "version": "0.1.0",
+        "tag": "latest",
+        "publishedAt": "2026-05-20",
+        "publisher": {
+          "handle": "coreblow"
+        },
+        "status": "metadata-only",
+        "artifact": {
+          "name": "corehub-directory-0.1.0.corehub-manifest.json",
+          "mediaType": "application/vnd.coreblow.corehub.manifest+json",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "downloadEnabled": false,
+          "provenance": {
+            "source": "https://github.com/coreblow/corehub",
+            "reviewState": "verified"
+          },
+          "files": []
+        }
+      }
+    ]
   },
   {
     "id": "plugin-lab",
@@ -117,6 +163,29 @@ export const COREHUB_CATALOG = [
         "macos",
         "windows"
       ]
-    }
+    },
+    "versions": [
+      {
+        "version": "0.1.0",
+        "tag": "latest",
+        "publishedAt": "2026-05-20",
+        "publisher": {
+          "handle": "coreblow"
+        },
+        "status": "metadata-only",
+        "artifact": {
+          "name": "plugin-lab-0.1.0.corehub-manifest.json",
+          "mediaType": "application/vnd.coreblow.corehub.manifest+json",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "downloadEnabled": false,
+          "provenance": {
+            "source": "https://github.com/coreblow/plugin-lab",
+            "reviewState": "verified"
+          },
+          "files": []
+        }
+      }
+    ]
   }
 ];

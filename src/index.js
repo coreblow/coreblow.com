@@ -928,6 +928,7 @@ function normalizeCoreHubEntry(entry, options = {}) {
     tags: Array.isArray(entry.tags) ? entry.tags : [],
     capabilities: Array.isArray(entry.capabilities) ? entry.capabilities : [],
     publisher: entry.publisher ?? null,
+    versions: Array.isArray(entry.versions) ? entry.versions : [],
     review: entry.review ?? null,
     coreblow: entry.coreblow ?? null,
     links: {
@@ -1087,7 +1088,7 @@ function coreHubNotImplemented(data, meta = {}) {
   return coreHubJson(
     {
       error: "not_implemented",
-      message: "CoreHub file downloads require version artifact storage, integrity metadata, and publisher identity.",
+      message: "CoreHub file downloads require storage-backed artifacts and download policy enforcement.",
       ...data,
     },
     { status: 501, cacheControl: "public, max-age=60", meta: { count: 0, ...meta } },
@@ -1095,32 +1096,54 @@ function coreHubNotImplemented(data, meta = {}) {
 }
 
 function normalizeCoreHubVersion(entry) {
-  return {
+  return listCoreHubVersions(entry)[0] ?? null;
+}
+
+function listCoreHubVersions(entry) {
+  const versions = Array.isArray(entry.versions) && entry.versions.length > 0
+    ? entry.versions
+    : [
+        {
+          version: entry.version ?? null,
+          tag: "latest",
+          publishedAt: null,
+          publisher: entry.publisher ? { handle: entry.publisher.handle } : null,
+          status: "metadata-only",
+          artifact: null,
+        },
+      ];
+
+  return versions.map((version) => ({
     id: entry.id,
-    version: entry.version,
-    tag: "latest",
+    version: version.version,
+    tag: version.tag,
+    publishedAt: version.publishedAt,
+    publisher: version.publisher ?? null,
+    status: version.status,
+    artifact: version.artifact ?? null,
     review: entry.review,
     source: entry.source,
-    files: [],
-    artifact: null,
     links: {
-      files: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/files`,
-      artifact: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/artifact`,
-      download: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/download`,
+      files: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/files?version=${encodeURIComponent(version.version ?? "")}`,
+      artifact: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/artifact?version=${encodeURIComponent(version.version ?? "")}`,
+      download: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/download?version=${encodeURIComponent(version.version ?? "")}`,
     },
-  };
+  }));
 }
 
 function normalizeCoreHubFileList(entry, options = {}) {
+  const versionRecord = findCoreHubVersion(entry, options.version);
+  const artifact = versionRecord?.artifact ?? null;
   return {
     package: {
       id: entry.id,
       kind: entry.kind,
       name: entry.name,
     },
-    version: options.version ?? entry.version ?? null,
-    files: [],
-    artifact: null,
+    version: versionRecord?.version ?? null,
+    publisher: versionRecord?.publisher ?? null,
+    files: artifact?.files ?? [],
+    artifact,
     links: {
       package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
       versions: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}/versions`,
@@ -1130,19 +1153,23 @@ function normalizeCoreHubFileList(entry, options = {}) {
 }
 
 function normalizeCoreHubArtifact(entry, options = {}) {
-  const version = options.version ?? entry.version ?? null;
+  const versionRecord = findCoreHubVersion(entry, options.version);
+  const artifact = versionRecord?.artifact ?? null;
   return {
     package: {
       id: entry.id,
       kind: entry.kind,
       name: entry.name,
     },
-    version,
-    artifact: null,
-    files: [],
+    version: versionRecord?.version ?? null,
+    publisher: versionRecord?.publisher ?? null,
+    artifact,
+    files: artifact?.files ?? [],
     download: {
-      available: false,
-      reason: "CoreHub static catalog entries do not include downloadable artifacts yet.",
+      available: Boolean(artifact?.downloadEnabled),
+      reason: artifact?.downloadEnabled
+        ? null
+        : "CoreHub artifact manifests are available, but binary downloads are not enabled yet.",
     },
     links: {
       package: `/corehub/api/v1/packages/${encodeURIComponent(entry.id)}`,
@@ -1154,11 +1181,16 @@ function normalizeCoreHubArtifact(entry, options = {}) {
 
 function readCoreHubVersion(url, entry) {
   const requested = url.searchParams.get("version")?.trim() || url.searchParams.get("tag")?.trim();
-  const current = entry.version ?? null;
-  if (!requested || requested === "latest" || requested === current) {
-    return current;
+  return findCoreHubVersion(entry, requested)?.version ?? null;
+}
+
+function findCoreHubVersion(entry, requested) {
+  const versions = listCoreHubVersions(entry);
+  const target = requested?.trim();
+  if (!target || target === "latest") {
+    return versions.find((version) => version.tag === "latest") ?? versions[0] ?? null;
   }
-  return null;
+  return versions.find((version) => version.version === target || version.tag === target) ?? null;
 }
 
 function handleCoreHubApi(url) {
@@ -1233,7 +1265,7 @@ function handleCoreHubApi(url) {
     const id = decodeURIComponent(packageVersionsMatch[1]);
     const entry = findCoreHubEntry(id);
     if (!entry) return coreHubNotFound(`CoreHub package not found: ${id}`);
-    return coreHubJson([normalizeCoreHubVersion(entry)]);
+    return coreHubJson(listCoreHubVersions(entry));
   }
 
   const packageFilesMatch = path.match(/^\/corehub\/api\/v1\/packages\/([^/]+)\/files$/);
@@ -1275,7 +1307,8 @@ function handleCoreHubApi(url) {
           name: entry.name,
         },
         version,
-        artifact: null,
+        publisher: findCoreHubVersion(entry, version)?.publisher ?? null,
+        artifact: findCoreHubVersion(entry, version)?.artifact ?? null,
       },
       { package: id, version },
     );
@@ -1301,7 +1334,8 @@ function handleCoreHubApi(url) {
           name: entry.name,
         },
         version,
-        artifact: null,
+        publisher: findCoreHubVersion(entry, version)?.publisher ?? null,
+        artifact: findCoreHubVersion(entry, version)?.artifact ?? null,
       },
       { package: id, version },
     );

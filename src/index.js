@@ -1,201 +1,8 @@
 import { COREHUB_CATALOG } from "./corehub-catalog.generated.js";
 
-const HTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CoreBlow — Coming Soon</title>
-  <meta name="description" content="CoreBlow is under construction. Something powerful is coming." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+const HTML = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>CoreBlow — Sovereign Autonomous Agent-OS</title>\n  <meta name=\"description\" content=\"CoreBlow v2.0.0 Sovereign Agent-OS. 12-Service Hybrid OOP/DOP Microkernel, Cory 4-Layer Memory & Wiki, Closed-Loop EvoLoop Skill Synthesis, Multi-Agent War Rooms, and Native macOS Studio.\" />\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap\" rel=\"stylesheet\" />\n  <style>\n    :root {\n      --bg-base: #050D12;\n      --bg-slate: #08171C;\n      --bg-teal: #0A2429;\n      --bg-card: rgba(10, 36, 41, 0.55);\n      --bg-card-hover: rgba(14, 46, 52, 0.75);\n      --accent-cyan: #60D9CC;\n      --accent-teal: #10B981;\n      --accent-ice: #99F6E4;\n      --text-main: #F1F5F9;\n      --text-muted: #94A3B8;\n      --text-dim: #64748B;\n      --border-subtle: rgba(96, 217, 204, 0.14);\n      --border-active: rgba(96, 217, 204, 0.4);\n      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;\n      --font-mono: 'JetBrains Mono', ui-monospace, monospace;\n    }\n\n    * { box-sizing: border-box; margin: 0; padding: 0; }\n\n    body {\n      background: radial-gradient(circle at 50% 0%, #0c2b31 0%, #08171c 45%, #050d12 100%);\n      color: var(--text-main);\n      font-family: var(--font-sans);\n      min-height: 100vh;\n      line-height: 1.6;\n      -webkit-font-smoothing: antialiased;\n      overflow-x: hidden;\n    }\n\n    .noise-bg {\n      position: fixed;\n      inset: 0;\n      background: radial-gradient(circle at 20% 20%, rgba(96, 217, 204, 0.05) 0%, transparent 50%),\n                  radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);\n      pointer-events: none;\n      z-index: 0;\n    }\n\n    .container {\n      max-width: 1200px;\n      margin: 0 auto;\n      padding: 0 24px;\n      position: relative;\n      z-index: 1;\n    }\n\n    /* Header Nav */\n    header {\n      position: sticky;\n      top: 0;\n      backdrop-filter: blur(24px) saturate(140%);\n      -webkit-backdrop-filter: blur(24px) saturate(140%);\n      background: rgba(5, 13, 18, 0.85);\n      border-bottom: 1px solid var(--border-subtle);\n      z-index: 100;\n      padding: 16px 0;\n    }\n\n    .header-inner {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n    }\n\n    .brand {\n      display: flex;\n      align-items: center;\n      gap: 12px;\n      text-decoration: none;\n      color: inherit;\n    }\n\n    .brand-logo {\n      width: 34px;\n      height: 34px;\n      background: linear-gradient(135deg, rgba(96, 217, 204, 0.25), rgba(16, 185, 129, 0.25));\n      border: 1px solid var(--border-active);\n      border-radius: 9px;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      color: var(--accent-cyan);\n    }\n\n    .brand-name {\n      font-weight: 700;\n      font-size: 1.15rem;\n      letter-spacing: -0.02em;\n    }\n\n    .brand-badge {\n      font-size: 0.7rem;\n      font-family: var(--font-mono);\n      padding: 2px 8px;\n      border-radius: 999px;\n      background: rgba(96, 217, 204, 0.12);\n      border: 1px solid rgba(96, 217, 204, 0.3);\n      color: var(--accent-cyan);\n    }\n\n    nav.nav-links {\n      display: flex;\n      align-items: center;\n      gap: 28px;\n    }\n\n    nav.nav-links a {\n      color: var(--text-muted);\n      text-decoration: none;\n      font-size: 0.9rem;\n      font-weight: 500;\n      transition: color 0.2s;\n    }\n\n    nav.nav-links a:hover {\n      color: var(--accent-cyan);\n    }\n\n    .btn-nav-install {\n      background: var(--bg-card);\n      border: 1px solid var(--border-subtle);\n      color: var(--accent-cyan);\n      font-family: var(--font-mono);\n      font-size: 0.8rem;\n      padding: 7px 16px;\n      border-radius: 8px;\n      text-decoration: none;\n      transition: all 0.2s;\n    }\n\n    .btn-nav-install:hover {\n      background: rgba(96, 217, 204, 0.15);\n      border-color: var(--border-active);\n    }\n\n    /* Hero */\n    .hero {\n      padding: 80px 0 50px;\n      text-align: center;\n    }\n\n    .hero-badge {\n      display: inline-flex;\n      align-items: center;\n      gap: 8px;\n      padding: 6px 18px;\n      border-radius: 999px;\n      background: rgba(10, 36, 41, 0.85);\n      border: 1px solid var(--border-subtle);\n      font-family: var(--font-mono);\n      font-size: 0.8rem;\n      color: var(--accent-cyan);\n      margin-bottom: 24px;\n      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);\n    }\n\n    .hero-badge-dot {\n      width: 7px;\n      height: 7px;\n      border-radius: 50%;\n      background: var(--accent-teal);\n      box-shadow: 0 0 10px var(--accent-teal);\n    }\n\n    .hero-title {\n      font-size: clamp(2.5rem, 5.5vw, 4.4rem);\n      font-weight: 900;\n      letter-spacing: -0.04em;\n      line-height: 1.08;\n      margin-bottom: 22px;\n      background: linear-gradient(180deg, #FFFFFF 30%, #A5B4FC 100%);\n      -webkit-background-clip: text;\n      -webkit-text-fill-color: transparent;\n    }\n\n    .hero-subtitle {\n      font-size: clamp(1rem, 2vw, 1.25rem);\n      color: var(--text-muted);\n      max-width: 840px;\n      margin: 0 auto 36px;\n      font-weight: 400;\n    }\n\n    /* Installer Box */\n    .installer-box {\n      max-width: 640px;\n      margin: 0 auto 32px;\n      background: rgba(10, 36, 41, 0.85);\n      border: 1px solid var(--border-subtle);\n      border-radius: 12px;\n      overflow: hidden;\n      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);\n    }\n\n    .installer-tabs {\n      display: flex;\n      border-bottom: 1px solid var(--border-subtle);\n      background: rgba(5, 13, 18, 0.6);\n    }\n\n    .installer-tab {\n      padding: 8px 18px;\n      font-size: 0.78rem;\n      font-family: var(--font-mono);\n      color: var(--text-muted);\n      background: none;\n      border: none;\n      cursor: pointer;\n      transition: all 0.2s;\n    }\n\n    .installer-tab.active {\n      color: var(--accent-cyan);\n      background: rgba(96, 217, 204, 0.08);\n      border-bottom: 2px solid var(--accent-cyan);\n    }\n\n    .installer-code-row {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      padding: 14px 18px;\n      font-family: var(--font-mono);\n      font-size: 0.85rem;\n    }\n\n    .installer-cmd {\n      color: #E2E8F0;\n      display: flex;\n      align-items: center;\n      gap: 12px;\n      overflow-x: auto;\n    }\n\n    .installer-prompt-symbol {\n      color: var(--accent-cyan);\n      user-select: none;\n    }\n\n    .btn-copy {\n      background: rgba(255, 255, 255, 0.06);\n      border: 1px solid rgba(255, 255, 255, 0.1);\n      color: var(--text-muted);\n      padding: 6px 12px;\n      border-radius: 6px;\n      cursor: pointer;\n      font-size: 0.75rem;\n      font-family: var(--font-sans);\n      transition: all 0.2s;\n      flex-shrink: 0;\n    }\n\n    .btn-copy:hover {\n      background: rgba(96, 217, 204, 0.15);\n      border-color: var(--border-active);\n      color: var(--accent-cyan);\n    }\n\n    /* CTA buttons */\n    .cta-group {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      gap: 16px;\n      flex-wrap: wrap;\n      margin-bottom: 60px;\n    }\n\n    .btn-primary {\n      background: linear-gradient(135deg, #10B981, #0EA5E9);\n      color: #050D12;\n      font-weight: 700;\n      font-size: 0.95rem;\n      padding: 12px 26px;\n      border-radius: 10px;\n      text-decoration: none;\n      transition: transform 0.2s, box-shadow 0.2s;\n      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);\n    }\n\n    .btn-primary:hover {\n      transform: translateY(-1px);\n      box-shadow: 0 6px 28px rgba(16, 185, 129, 0.5);\n    }\n\n    .btn-secondary {\n      background: var(--bg-card);\n      border: 1px solid var(--border-subtle);\n      color: var(--text-main);\n      font-weight: 600;\n      font-size: 0.95rem;\n      padding: 12px 24px;\n      border-radius: 10px;\n      text-decoration: none;\n      transition: all 0.2s;\n    }\n\n    .btn-secondary:hover {\n      border-color: var(--border-active);\n      background: var(--bg-card-hover);\n      color: var(--accent-cyan);\n    }\n\n    /* CoreBlow Studio 3-Pane Preview Window */\n    .studio-preview {\n      margin: 10px auto 80px;\n      background: rgba(8, 23, 28, 0.85);\n      backdrop-filter: blur(48px);\n      -webkit-backdrop-filter: blur(48px);\n      border: 1px solid var(--border-subtle);\n      border-radius: 16px;\n      overflow: hidden;\n      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(96, 217, 204, 0.12);\n      text-align: left;\n    }\n\n    .studio-titlebar {\n      height: 40px;\n      background: rgba(5, 13, 18, 0.8);\n      border-bottom: 1px solid var(--border-subtle);\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      padding: 0 16px;\n    }\n\n    .traffic-lights {\n      display: flex;\n      gap: 8px;\n    }\n\n    .light {\n      width: 12px;\n      height: 12px;\n      border-radius: 50%;\n    }\n    .light-red { background: #FF5F56; }\n    .light-yellow { background: #FFBD2E; }\n    .light-green { background: #27C93F; }\n\n    .studio-title {\n      font-size: 0.75rem;\n      font-family: var(--font-mono);\n      color: var(--text-muted);\n    }\n\n    .studio-status-chip {\n      font-size: 0.7rem;\n      font-family: var(--font-mono);\n      color: var(--accent-cyan);\n      background: rgba(96, 217, 204, 0.1);\n      padding: 3px 10px;\n      border-radius: 6px;\n      border: 1px solid rgba(96, 217, 204, 0.25);\n    }\n\n    .studio-panes {\n      display: grid;\n      grid-template-columns: 240px 1fr 340px;\n      min-height: 520px;\n    }\n\n    /* Left Sidebar */\n    .studio-sidebar {\n      background: rgba(6, 17, 21, 0.78);\n      border-right: 1px solid var(--border-subtle);\n      padding: 16px 12px;\n      font-size: 0.8rem;\n    }\n\n    .sidebar-section-title {\n      font-size: 0.65rem;\n      font-weight: 700;\n      color: var(--text-dim);\n      text-transform: uppercase;\n      letter-spacing: 0.05em;\n      margin-bottom: 8px;\n      padding: 0 8px;\n    }\n\n    .sidebar-item {\n      display: flex;\n      align-items: center;\n      gap: 8px;\n      padding: 6px 10px;\n      border-radius: 6px;\n      color: var(--text-muted);\n      cursor: pointer;\n      margin-bottom: 3px;\n      font-size: 0.78rem;\n    }\n\n    .sidebar-item.active {\n      background: rgba(96, 217, 204, 0.12);\n      color: var(--accent-cyan);\n      font-weight: 600;\n    }\n\n    /* Center Canvas */\n    .studio-canvas {\n      padding: 24px;\n      display: flex;\n      flex-direction: column;\n      justify-content: space-between;\n      background: radial-gradient(circle at 50% 30%, rgba(10, 36, 41, 0.45) 0%, rgba(5, 13, 18, 0.95) 100%);\n    }\n\n    .canvas-center {\n      margin: auto 0;\n      text-align: center;\n    }\n\n    .canvas-emblem {\n      width: 58px;\n      height: 58px;\n      border-radius: 16px;\n      background: linear-gradient(135deg, rgba(96, 217, 204, 0.25), rgba(16, 185, 129, 0.2));\n      border: 1px solid var(--border-active);\n      margin: 0 auto 16px;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      color: var(--accent-cyan);\n      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);\n    }\n\n    .canvas-heading {\n      font-size: 1.55rem;\n      font-weight: 700;\n      color: #FFF;\n      margin-bottom: 8px;\n      letter-spacing: -0.02em;\n    }\n\n    .canvas-sub {\n      font-size: 0.85rem;\n      color: var(--text-muted);\n      max-width: 480px;\n      margin: 0 auto;\n    }\n\n    /* Floating Composer */\n    .composer-box {\n      background: rgba(10, 36, 41, 0.9);\n      border: 1px solid var(--border-active);\n      border-radius: 12px;\n      padding: 14px;\n      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);\n    }\n\n    .composer-chips {\n      display: flex;\n      gap: 8px;\n      margin-bottom: 10px;\n    }\n\n    .context-chip {\n      font-size: 0.72rem;\n      font-family: var(--font-mono);\n      background: rgba(255, 255, 255, 0.05);\n      border: 1px solid var(--border-subtle);\n      padding: 3px 8px;\n      border-radius: 5px;\n      color: var(--accent-cyan);\n    }\n\n    .composer-input {\n      font-size: 0.88rem;\n      color: var(--text-dim);\n      padding: 4px 0 12px;\n    }\n\n    .composer-actions {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      border-top: 1px solid rgba(255, 255, 255, 0.06);\n      padding-top: 10px;\n    }\n\n    .composer-tier {\n      font-size: 0.72rem;\n      font-family: var(--font-mono);\n      color: var(--accent-teal);\n      display: flex;\n      align-items: center;\n      gap: 6px;\n    }\n\n    .tier-dot {\n      width: 6px;\n      height: 6px;\n      border-radius: 50%;\n      background: var(--accent-teal);\n    }\n\n    /* Right Inspector */\n    .studio-inspector {\n      background: rgba(6, 17, 21, 0.85);\n      border-left: 1px solid var(--border-subtle);\n      padding: 16px;\n      font-size: 0.8rem;\n    }\n\n    .gate-card {\n      background: rgba(10, 36, 41, 0.55);\n      border: 1px solid var(--border-subtle);\n      border-radius: 8px;\n      padding: 14px;\n      margin-bottom: 14px;\n    }\n\n    .gate-title {\n      font-weight: 700;\n      color: var(--accent-cyan);\n      margin-bottom: 10px;\n      font-size: 0.75rem;\n      text-transform: uppercase;\n      letter-spacing: 0.05em;\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n    }\n\n    .gate-item {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      padding: 5px 0;\n      font-family: var(--font-mono);\n      font-size: 0.72rem;\n      color: var(--text-muted);\n      border-bottom: 1px solid rgba(255, 255, 255, 0.04);\n    }\n\n    .gate-item:last-child {\n      border-bottom: none;\n    }\n\n    .gate-item span.status {\n      color: var(--accent-teal);\n      font-weight: 600;\n    }\n\n    /* 6-Card Grid */\n    .grid-section {\n      padding: 40px 0 80px;\n    }\n\n    .section-header {\n      text-align: center;\n      margin-bottom: 52px;\n    }\n\n    .section-tag {\n      font-family: var(--font-mono);\n      font-size: 0.78rem;\n      color: var(--accent-cyan);\n      text-transform: uppercase;\n      letter-spacing: 0.08em;\n      margin-bottom: 10px;\n    }\n\n    .section-title {\n      font-size: 2.3rem;\n      font-weight: 800;\n      letter-spacing: -0.03em;\n    }\n\n    .feature-grid {\n      display: grid;\n      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));\n      gap: 24px;\n    }\n\n    .feature-card {\n      background: var(--bg-card);\n      border: 1px solid var(--border-subtle);\n      border-radius: 14px;\n      padding: 30px;\n      transition: all 0.25s ease;\n      position: relative;\n    }\n\n    .feature-card:hover {\n      background: var(--bg-card-hover);\n      border-color: var(--border-active);\n      transform: translateY(-2px);\n    }\n\n    .feature-icon {\n      font-size: 1.8rem;\n      margin-bottom: 16px;\n      display: inline-block;\n    }\n\n    .feature-name {\n      font-size: 1.18rem;\n      font-weight: 700;\n      margin-bottom: 10px;\n      color: var(--text-main);\n    }\n\n    .feature-desc {\n      font-size: 0.88rem;\n      color: var(--text-muted);\n      line-height: 1.6;\n    }\n\n    /* Omni-Platform Surfaces Bar */\n    .surfaces-section {\n      padding: 40px 0 80px;\n      border-top: 1px solid var(--border-subtle);\n    }\n\n    .surfaces-title {\n      text-align: center;\n      font-size: 0.85rem;\n      font-family: var(--font-mono);\n      color: var(--text-dim);\n      text-transform: uppercase;\n      letter-spacing: 0.08em;\n      margin-bottom: 24px;\n    }\n\n    .surfaces-badges {\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      gap: 16px;\n      flex-wrap: wrap;\n    }\n\n    .surface-badge {\n      display: flex;\n      align-items: center;\n      gap: 8px;\n      background: rgba(10, 36, 41, 0.65);\n      border: 1px solid var(--border-subtle);\n      padding: 9px 18px;\n      border-radius: 8px;\n      font-size: 0.82rem;\n      color: var(--text-muted);\n      font-weight: 500;\n    }\n\n    .surface-badge span.dot {\n      width: 6px;\n      height: 6px;\n      border-radius: 50%;\n      background: var(--accent-teal);\n    }\n\n    /* Footer */\n    footer {\n      border-top: 1px solid var(--border-subtle);\n      padding: 48px 0;\n      background: rgba(5, 13, 18, 0.95);\n      font-size: 0.85rem;\n      color: var(--text-dim);\n    }\n\n    .footer-inner {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      flex-wrap: wrap;\n      gap: 20px;\n    }\n\n    .footer-links {\n      display: flex;\n      gap: 28px;\n    }\n\n    .footer-links a {\n      color: var(--text-muted);\n      text-decoration: none;\n      transition: color 0.2s;\n    }\n\n    .footer-links a:hover {\n      color: var(--accent-cyan);\n    }\n\n    @media (max-width: 960px) {\n      .studio-panes { grid-template-columns: 1fr; }\n      .studio-sidebar, .studio-inspector { display: none; }\n      nav.nav-links { display: none; }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"noise-bg\"></div>\n\n  <!-- Header -->\n  <header>\n    <div class=\"container header-inner\">\n      <a href=\"/\" class=\"brand\">\n        <div class=\"brand-logo\">\n          <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n            <path d=\"M12 2L2 7l10 5 10-5-10-5z\"/><path d=\"M2 17l10 5 10-5\"/><path d=\"M2 12l10 5 10-5\"/>\n          </svg>\n        </div>\n        <span class=\"brand-name\">CoreBlow</span>\n        <span class=\"brand-badge\">v2.0.0 GA</span>\n      </a>\n\n      <nav class=\"nav-links\">\n        <a href=\"#studio\">Studio (macOS)</a>\n        <a href=\"#microkernel\">Microkernel</a>\n        <a href=\"/corehub\">CoreHub Store</a>\n        <a href=\"https://docs.coreblow.com\" target=\"_blank\" rel=\"noopener\">Documentation</a>\n        <a href=\"https://github.com/coreblow/coreblow\" target=\"_blank\" rel=\"noopener\">GitHub</a>\n      </nav>\n\n      <a href=\"/install.sh\" class=\"btn-nav-install\">curl install.sh</a>\n    </div>\n  </header>\n\n  <!-- Hero -->\n  <section class=\"hero\">\n    <div class=\"container\">\n      <div class=\"hero-badge\">\n        <span class=\"hero-badge-dot\"></span>\n        <span>CoreBlow v2.0.0 Sovereign GA · &lt; 1ms Microkernel Boot</span>\n      </div>\n\n      <h1 class=\"hero-title\">The Sovereign<br/>Autonomous Agent-OS.</h1>\n\n      <p class=\"hero-subtitle\">\n        12-Service Hybrid OOP/DOP Microkernel, Cory 4-Layer Memory &amp; Wiki, Closed-Loop EvoLoop Skill Synthesis, Multi-Agent War Rooms, and Native macOS Studio (⌥ + Space).\n      </p>\n\n      <!-- One-line Install Box -->\n      <div class=\"installer-box\">\n        <div class=\"installer-tabs\">\n          <button class=\"installer-tab active\" id=\"tabCurl\" onclick=\"switchInstallerTab('curl')\">curl (Recommended)</button>\n          <button class=\"installer-tab\" id=\"tabNpm\" onclick=\"switchInstallerTab('npm')\">npm global</button>\n        </div>\n        <div class=\"installer-code-row\">\n          <div class=\"installer-cmd\">\n            <span class=\"installer-prompt-symbol\">$</span>\n            <span id=\"cmdText\">curl -fsSL https://coreblow.com/install.sh | bash</span>\n          </div>\n          <button class=\"btn-copy\" id=\"copyBtn\" onclick=\"copyInstallerCmd()\">Copy</button>\n        </div>\n      </div>\n\n      <!-- CTA Buttons -->\n      <div class=\"cta-group\">\n        <a href=\"/corehub\" class=\"btn-primary\">Explore CoreHub Store</a>\n        <a href=\"https://docs.coreblow.com\" class=\"btn-secondary\" target=\"_blank\" rel=\"noopener\">Read Documentation</a>\n        <a href=\"https://github.com/coreblow/coreblow\" class=\"btn-secondary\" target=\"_blank\" rel=\"noopener\">View GitHub</a>\n      </div>\n\n      <!-- CoreBlow Studio 3-Pane Preview Window -->\n      <div class=\"studio-preview\" id=\"studio\">\n        <div class=\"studio-titlebar\">\n          <div class=\"traffic-lights\">\n            <span class=\"light light-red\"></span>\n            <span class=\"light light-yellow\"></span>\n            <span class=\"light light-green\"></span>\n          </div>\n          <div class=\"studio-title\">CoreBlow Studio — Native macOS 3-Pane Autonomous Workspace</div>\n          <div class=\"studio-status-chip\">Microkernel Ready · Apple Silicon</div>\n        </div>\n\n        <div class=\"studio-panes\">\n          <!-- Pane 1: Project & War Room Sidebar -->\n          <div class=\"studio-sidebar\">\n            <div class=\"sidebar-section-title\">Projects &amp; Worktrees</div>\n            <div class=\"sidebar-item active\">📁 coreblow <span style=\"margin-left:auto;font-size:0.68rem;color:var(--accent-teal);\">● active</span></div>\n            <div class=\"sidebar-item\">📁 tradingview</div>\n            <div class=\"sidebar-item\">📁 dxm-scanner</div>\n            <div class=\"sidebar-item\">📁 coreblow.com</div>\n\n            <div class=\"sidebar-section-title\" style=\"margin-top:20px;\">Autonomous Swarms</div>\n            <div class=\"sidebar-item\">⚔️ War Room Swarm (4 Agents)</div>\n            <div class=\"sidebar-item\">🛡️ PR Gate Auditor</div>\n            <div class=\"sidebar-item\">📖 Cory Knowledge Scribe</div>\n\n            <div class=\"sidebar-section-title\" style=\"margin-top:20px;\">Cognitive Memory Wiki</div>\n            <div class=\"sidebar-item\">📄 USER.md</div>\n            <div class=\"sidebar-item\">📄 MEMORY.md</div>\n            <div class=\"sidebar-item\">📄 CONSTRAINTS.md</div>\n          </div>\n\n          <!-- Pane 2: Center Canvas & Floating Composer -->\n          <div class=\"studio-canvas\">\n            <div class=\"canvas-center\">\n              <div class=\"canvas-emblem\">\n                <svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n                  <path d=\"M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z\"/>\n                </svg>\n              </div>\n              <h3 class=\"canvas-heading\">What should we build in coreblow?</h3>\n              <p class=\"canvas-sub\">Sovereign autonomous coding squad, multi-agent War Rooms, and live 5-gate PR scorecard active on Apple Silicon.</p>\n            </div>\n\n            <!-- Floating Composer Box -->\n            <div class=\"composer-box\">\n              <div class=\"composer-chips\">\n                <span class=\"context-chip\">📁 coreblow</span>\n                <span class=\"context-chip\">💻 Local</span>\n                <span class=\"context-chip\">⎇ main</span>\n              </div>\n              <div class=\"composer-input\">Do anything... (Press ⌥ + Space for global companion bar)</div>\n              <div class=\"composer-actions\">\n                <div class=\"composer-tier\">\n                  <span class=\"tier-dot\"></span>\n                  <span>6-Tier Router: Coding (Auto)</span>\n                </div>\n                <div style=\"font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono);\">MLX Voice RTF &le; 0.4</div>\n              </div>\n            </div>\n          </div>\n\n          <!-- Pane 3: 5-Gate PR Pre-Flight Scorecard -->\n          <div class=\"studio-inspector\">\n            <div class=\"gate-card\">\n              <div class=\"gate-title\">\n                <span>5-Gate PR Scorecard</span>\n                <span style=\"color:var(--accent-teal);\">5/5 PASS</span>\n              </div>\n              <div class=\"gate-item\"><span>typecheck</span><span class=\"status\">✓ Clean (0 err)</span></div>\n              <div class=\"gate-item\"><span>linter</span><span class=\"status\">✓ Oxlint Green</span></div>\n              <div class=\"gate-item\"><span>unit_tests</span><span class=\"status\">✓ 268/268 Green</span></div>\n              <div class=\"gate-item\"><span>secret_scan</span><span class=\"status\">✓ 0 Leaks</span></div>\n              <div class=\"gate-item\"><span>forbidden_paths</span><span class=\"status\">✓ 100% Sovereign</span></div>\n            </div>\n\n            <div class=\"gate-card\" style=\"margin-bottom:0;\">\n              <div class=\"gate-title\">\n                <span>Live Worktree Diff</span>\n                <span style=\"color:var(--accent-cyan);font-family:var(--font-mono);font-size:0.7rem;\">+480 / -12</span>\n              </div>\n              <div style=\"font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);line-height:1.4;background:rgba(5,13,18,0.7);padding:8px;border-radius:6px;overflow-x:auto;\">\n                <span style=\"color:#10B981;\">+++ b/apps/macos/CoreBlowStudioView.swift</span><br/>\n                <span style=\"color:var(--text-dim);\">@@ -1,8 +1,28 @@</span><br/>\n                <span style=\"color:#10B981;\">+ // Deep Muted Teal &amp; Dark Slate Frosted Glass</span><br/>\n                <span style=\"color:#10B981;\">+ VisualEffectView(.underWindowBackground)</span>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <!-- 12-Service Microkernel & Two-Tier Extensibility Grid -->\n  <section class=\"grid-section\" id=\"microkernel\">\n    <div class=\"container\">\n      <div class=\"section-header\">\n        <div class=\"section-tag\">Sovereign Architecture</div>\n        <h2 class=\"section-title\">12-Service Hybrid OOP/DOP Microkernel</h2>\n      </div>\n\n      <div class=\"feature-grid\">\n        <!-- Card 1 -->\n        <div class=\"feature-card\">\n          <div class=\"feature-icon\">📖</div>\n          <h3 class=\"feature-name\">Cory 4-Layer Memory &amp; Wiki</h3>\n          <p class=\"feature-desc\">Persistent cognitive architecture compiling conversation history into structured, version-controlled markdown wiki pages (USER.md, MEMORY.md, CONSTRAINTS.md) with zero-stall background chunk compaction.</p>\n        </div>\n\n        <!-- Card 2 -->\n        <div class=\"feature-card\">\n          <div class=\"feature-icon\">🧬</div>\n          <h3 class=\"feature-name\">Cory EvoLoop Self-Learning Skills</h3>\n          <p class=\"feature-desc\">Closed-loop autonomous skill synthesis engine that distills developer correction workflows into production SKILL.md V2 packages, ranked via Wilson score lower bound confidence and secured with tamper-resistant 🔒 Locked invariants.</p>\n        </div>\n\n        <!-- Card 3 -->\n        <div class=\"feature-card\">\n          <div class=\"feature-icon\">🧭</div>\n          <h3 class=\"feature-name\">6-Tier Decision Router &amp; Failover</h3>\n          <p class=\"feature-desc\">Microsecond heuristic classifier routing requests across fast triage (&lt;50ms), coding, deep reasoning, vision, and local tiers, featuring Daybreak hot failover to air-gapped Ollama/vLLM engines during cloud disruptions.</p>\n        </div>\n\n        <!-- Card 4 -->\n        <div class=\"feature-card\">\n          <div class=\"feature-icon\">⚔️</div>\n          <h3 class=\"feature-name\">Multi-Agent War Room &amp; Kanban DAG</h3>\n          <p class=\"feature-desc\">Parallel multi-agent collaboration squad (Lead, Coder, Auditor, Verifier) coordinating over a directed acyclic graph task board, achieving cryptographic consensus before merging changes to disk.</p>\n        </div>\n\n        <!-- Card 5 -->\n        <div class=\"feature-card\">\n          <div class=\"feature-icon\">🛡️</div>\n          <h3 class=\"feature-name\">5-Gate Autonomous PR Workflow</h3>\n          <p class=\"feature-desc\">Comprehensive pre-flight evaluation running typecheck, oxlint, unit tests, secret scanning, and brand sovereignty auditing prior to automated pull request creation with 1-click merge and rollback.</p>\n        </div>\n\n        <!-- Card 6 -->\n        <div class=\"feature-card\">\n          <div class=\"feature-icon\">🔌</div>\n          <h3 class=\"feature-name\">Live Sovereign MCP Bridge</h3>\n          <p class=\"feature-desc\">Pure Model Context Protocol stdio multiplexer connecting external developer tools, browsers, databases, and filesystem inspectors with deterministic sandboxing and zero memory leak guarantees.</p>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <!-- Omni-Platform Native Surfaces -->\n  <section class=\"surfaces-section\">\n    <div class=\"container\">\n      <div class=\"surfaces-title\">Omni-Platform Native Surfaces</div>\n      <div class=\"surfaces-badges\">\n        <div class=\"surface-badge\"><span class=\"dot\"></span><span>macOS Studio (Swift 6.2 + MLX TTS RTF &le; 0.4)</span></div>\n        <div class=\"surface-badge\"><span class=\"dot\"></span><span>iOS &amp; watchOS Native</span></div>\n        <div class=\"surface-badge\"><span class=\"dot\"></span><span>Android (Jetpack Compose)</span></div>\n        <div class=\"surface-badge\"><span class=\"dot\"></span><span>CoreChat (Go CLI)</span></div>\n        <div class=\"surface-badge\"><span class=\"dot\"></span><span>Windows Node (WSL &amp; PowerShell)</span></div>\n        <div class=\"surface-badge\"><span class=\"dot\"></span><span>ESP32 IoT Node</span></div>\n      </div>\n    </div>\n  </section>\n\n  <!-- Footer -->\n  <footer>\n    <div class=\"container footer-inner\">\n      <div>&copy; 2026 CoreBlow. Sovereign Autonomous Agent-OS. Released under Apache-2.0.</div>\n      <div class=\"footer-links\">\n        <a href=\"/corehub\">CoreHub Store</a>\n        <a href=\"https://docs.coreblow.com\" target=\"_blank\" rel=\"noopener\">Documentation</a>\n        <a href=\"https://github.com/coreblow/coreblow\" target=\"_blank\" rel=\"noopener\">GitHub</a>\n        <a href=\"/install.sh\">install.sh</a>\n      </div>\n    </div>\n  </footer>\n\n  <script>\n    function switchInstallerTab(type) {\n      const tabCurl = document.getElementById('tabCurl');\n      const tabNpm = document.getElementById('tabNpm');\n      const cmdText = document.getElementById('cmdText');\n      if (type === 'curl') {\n        tabCurl.classList.add('active');\n        tabNpm.classList.remove('active');\n        cmdText.textContent = 'curl -fsSL https://coreblow.com/install.sh | bash';\n      } else {\n        tabNpm.classList.add('active');\n        tabCurl.classList.remove('active');\n        cmdText.textContent = 'npm install -g coreblow && coreblow onboard';\n      }\n    }\n\n    function copyInstallerCmd() {\n      const cmdText = document.getElementById('cmdText').textContent;\n      const copyBtn = document.getElementById('copyBtn');\n      navigator.clipboard.writeText(cmdText).then(() => {\n        copyBtn.textContent = 'Copied!';\n        setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);\n      });\n    }\n  </script>\n</body>\n</html>";
 
-    :root {
-      --bg: #050508;
-      --accent: #7c3aed;
-      --accent2: #06b6d4;
-      --text: #f0f0ff;
-      --muted: #6b6b90;
-    }
-
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Animated background orbs */
-    .bg-orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.18;
-      pointer-events: none;
-      animation: float 8s ease-in-out infinite;
-    }
-    .bg-orb-1 {
-      width: 600px; height: 600px;
-      background: var(--accent);
-      top: -200px; left: -150px;
-      animation-delay: 0s;
-    }
-    .bg-orb-2 {
-      width: 500px; height: 500px;
-      background: var(--accent2);
-      bottom: -150px; right: -100px;
-      animation-delay: -4s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50%       { transform: translate(30px, -30px) scale(1.05); }
-    }
-
-    /* Grid overlay */
-    .grid-bg {
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-    }
-
-    .container {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 2rem;
-      max-width: 640px;
-    }
-
-    /* Badge */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(124, 58, 237, 0.12);
-      border: 1px solid rgba(124, 58, 237, 0.35);
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #a78bfa;
-      margin-bottom: 2rem;
-      animation: fadeDown 0.6s ease both;
-    }
-    .badge-dot {
-      width: 6px; height: 6px;
-      background: #a78bfa;
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(0.7); }
-    }
-
-    /* Logo / Wordmark */
-    .logo {
-      font-size: clamp(52px, 10vw, 88px);
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      line-height: 1;
-      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #22d3ee 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1.25rem;
-      animation: fadeDown 0.6s 0.1s ease both;
-    }
-
-    .tagline {
-      font-size: clamp(15px, 2.5vw, 18px);
-      color: var(--muted);
-      font-weight: 400;
-      line-height: 1.7;
-      margin-bottom: 2.5rem;
-      animation: fadeDown 0.6s 0.2s ease both;
-    }
-
-    /* Status pill */
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 12px 24px;
-      font-size: 14px;
-      color: var(--muted);
-      animation: fadeUp 0.6s 0.35s ease both;
-    }
-    .status-icon {
-      font-size: 18px;
-    }
-
-    /* Animations */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Footer */
-    .footer {
-      position: fixed;
-      bottom: 1.5rem;
-      left: 0; right: 0;
-      text-align: center;
-      font-size: 12px;
-      color: rgba(255,255,255,0.15);
-      letter-spacing: 0.05em;
-    }
-  </style>
-</head>
-<body>
-  <div class="bg-orb bg-orb-1"></div>
-  <div class="bg-orb bg-orb-2"></div>
-  <div class="grid-bg"></div>
-
-  <div class="container">
-    <div class="badge">
-      <span class="badge-dot"></span>
-      Under Construction
-    </div>
-
-    <div class="logo">CoreBlow</div>
-
-    <p class="tagline">
-      Something powerful is being built.<br />
-      We'll be live very soon.
-    </p>
-
-    <div class="status">
-      <span class="status-icon">🔧</span>
-      <span>Our team is working hard — stay tuned.</span>
-    </div>
-  </div>
-
-  <div class="footer">© 2025 CoreBlow · All rights reserved</div>
-</body>
-</html>`;
+const INSTALL_SH = "#!/usr/bin/env sh\n# CoreBlow Sovereign Agent-OS Universal Installer\n# https://coreblow.com\nset -eu\n\nprintf \"\\033[1;36m\"\ncat << 'EOF'\n   ______               ____  __               \n  / ____/___  ________ / __ )/ /___ _      __ \n / /   / __ \\/ ___/ _ \\ __  / / __ \\ | /| / / \n/ /___/ /_/ / /  /  __/ /_/ / / /_/ / |/ |/ /  \n\\____/\\____/_/   \\___/_____/_/\\____/|__/|__/   \n   Sovereign Autonomous Agent-OS · v2.0.0 GA\nEOF\nprintf \"\\033[0m\\n\"\n\necho \"==> Verifying system prerequisites...\"\nif ! command -v node >/dev/null 2>&1; then\n  echo \"Error: Node.js is required but not installed.\" >&2\n  echo \"Please install Node.js 22.12.0 or higher from https://nodejs.org\" >&2\n  exit 1\nfi\n\nNODE_VERSION=$(node -v | sed 's/^v//')\nNODE_MAJOR=$(echo \"$NODE_VERSION\" | cut -d. -f1)\nNODE_MINOR=$(echo \"$NODE_VERSION\" | cut -d. -f2)\n\nif [ \"$NODE_MAJOR\" -lt 22 ] || { [ \"$NODE_MAJOR\" -eq 22 ] && [ \"$NODE_MINOR\" -lt 12 ]; }; then\n  echo \"Error: Node.js version $NODE_VERSION detected.\" >&2\n  echo \"CoreBlow v2.0.0 requires Node.js >= 22.12.0.\" >&2\n  exit 1\nfi\n\necho \"==> Detected Node.js v$NODE_VERSION (Compatible)\"\n\nif ! command -v npm >/dev/null 2>&1; then\n  echo \"Error: npm is required but not found in PATH.\" >&2\n  exit 1\nfi\n\necho \"==> Installing CoreBlow Sovereign CLI globally via npm...\"\nnpm install -g coreblow@latest\n\necho \"\"\nprintf \"\\033[1;32m==> CoreBlow v2.0.0 successfully installed!\\033[0m\\n\"\necho \"To initialize your sovereign agent workspace, run:\"\nprintf \"  \\033[1;36mcoreblow onboard\\033[0m\\n\\n\"\necho \"To launch the native macOS Studio companion, use Option + Space.\"\necho \"Documentation: https://docs.coreblow.com\"\necho \"CoreHub Store: https://coreblow.com/corehub\"\n";
 
 const MASCOT_SVG = `<svg class="uploaded-mascot-svg" viewBox="0 0 1254 1254" role="img" aria-label="CoreBlow octopus mascot" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -843,6 +650,16 @@ const coreHubKindCounts = COREHUB_CATALOG.reduce(
   { all: 0, skill: 0, plugin: 0, provider: 0, channel: 0 },
 );
 
+const coreHubPublisherCount = listCoreHubPublishers().length;
+const coreHubVersionCount = COREHUB_CATALOG.reduce(
+  (count, entry) => count + (Array.isArray(entry.versions) && entry.versions.length > 0 ? entry.versions.length : 1),
+  0,
+);
+const coreHubDownloadableCount = COREHUB_CATALOG.filter((entry) =>
+  (Array.isArray(entry.versions) ? entry.versions : []).some((version) => version.artifact?.downloadEnabled),
+).length;
+const coreHubVerifiedCount = COREHUB_CATALOG.filter((entry) => entry.review?.state === "verified").length;
+
 const coreHubFilterHtml = coreHubKinds.map((kind) => {
   const active = kind === "all" ? " active" : "";
   const count = coreHubKindCounts[kind] ?? 0;
@@ -857,6 +674,9 @@ const coreHubEntriesHtml = COREHUB_CATALOG.map((entry) => {
   const homepageUrl = entry.homepage ?? sourceUrl;
   const reviewState = entry.review?.state ?? "review";
   const minVersion = entry.coreblow?.minCoreblowVersion ?? "not declared";
+  const publisher = entry.publisher?.displayName ?? entry.publisher?.handle ?? "unknown";
+  const latestVersion = normalizeCoreHubVersion(entry);
+  const installCommand = `corehub install ${entry.id} --registry https://coreblow.com/corehub`;
   const searchText = [
     entry.id,
     entry.kind,
@@ -875,8 +695,10 @@ const coreHubEntriesHtml = COREHUB_CATALOG.map((entry) => {
     </div>
     <h3>${escapeHtml(entry.name)}</h3>
     <p class="entry-summary">${escapeHtml(entry.summary)}</p>
+    <code class="install-command">${escapeHtml(installCommand)}</code>
     <dl class="entry-meta">
-      <div><dt>Version</dt><dd>${escapeHtml(entry.version ?? "unversioned")}</dd></div>
+      <div><dt>Version</dt><dd>${escapeHtml(latestVersion?.version ?? entry.version ?? "unversioned")}</dd></div>
+      <div><dt>Publisher</dt><dd>${escapeHtml(publisher)}</dd></div>
       <div><dt>CoreBlow</dt><dd>${escapeHtml(minVersion)}</dd></div>
       <div><dt>Platforms</dt><dd>${escapeHtml(platforms.length ? platforms.join(", ") : "not declared")}</dd></div>
     </dl>
@@ -892,6 +714,52 @@ const coreHubEntriesHtml = COREHUB_CATALOG.map((entry) => {
     </div>
   </article>`;
 }).join("");
+
+const coreHubSkills = COREHUB_CATALOG.filter((entry) => entry.kind === "skill");
+const coreHubPlugins = COREHUB_CATALOG.filter((entry) => entry.kind === "plugin");
+const coreHubFeaturedSource = coreHubSkills.concat(COREHUB_CATALOG.filter((entry) => entry.kind !== "skill"));
+
+function renderCoreHubFeatureCard(entry, options = {}) {
+  const publisher = entry.publisher?.displayName ?? entry.publisher?.handle ?? "unknown";
+  const latestVersion = normalizeCoreHubVersion(entry);
+  const artifact = latestVersion?.artifact;
+  const downloadEnabled = artifact?.downloadEnabled === true;
+  const versionLabel = latestVersion?.version ?? entry.version ?? "latest";
+  const installCommand = `corehub install ${entry.id} --registry https://coreblow.com/corehub`;
+  const classes = ["featured-card", options.compact ? "compact" : ""].filter(Boolean).join(" ");
+
+  return `<article class="${classes}">
+      <div class="featured-card-main">
+        <h3>${escapeHtml(entry.name)}</h3>
+        <p class="featured-byline">by ${escapeHtml(publisher)}</p>
+        ${options.showKind === false ? "" : `<span class="featured-kind">${escapeHtml(capitalize(entry.kind))}</span>`}
+        <p class="featured-summary">${escapeHtml(entry.summary)}</p>
+      </div>
+      <div class="featured-card-foot">
+        <span class="featured-stat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg>
+          ${escapeHtml(entry.review?.state ?? "review")}
+        </span>
+        <span class="featured-stat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          ${downloadEnabled ? "installable" : escapeHtml(versionLabel)}
+        </span>
+        <button class="featured-install" type="button" title="${escapeAttr(installCommand)}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          Install
+        </button>
+      </div>
+    </article>`;
+}
+
+const coreHubFeaturedHtml = (coreHubSkills.length ? coreHubSkills : coreHubFeaturedSource)
+  .slice(0, 5)
+  .map((entry) => renderCoreHubFeatureCard(entry))
+  .join("");
+const coreHubPluginFeaturedHtml = (coreHubPlugins.length ? coreHubPlugins : COREHUB_CATALOG)
+  .slice(0, 3)
+  .map((entry) => renderCoreHubFeatureCard(entry, { compact: true, showKind: false }))
+  .join("");
 
 function escapeHtml(value) {
   return String(value)
@@ -1451,30 +1319,46 @@ const COREHUB_HTML = `<!DOCTYPE html>
     *, *::before, *::after { box-sizing: border-box; }
 
     :root {
-      --bg: #f8fafc;
+      color-scheme: light dark;
+      --bg: #fbfaf6;
       --surface: #ffffff;
-      --surface-2: #eef2f7;
-      --text: #111827;
-      --muted: #5b6472;
-      --line: #d9e0ea;
-      --accent: #0f766e;
-      --accent-2: #1d4ed8;
-      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      --surface-soft: #f3efe7;
+      --text: #1b1d1f;
+      --muted: #686f77;
+      --line: #ded8ce;
+      --accent: #dd3f2f;
+      --accent-dark: #8f241b;
+      --green: #1d7a52;
+      --blue: #2563eb;
+      --yellow: #b7791f;
+      --shadow: 0 22px 60px rgba(51, 43, 34, 0.1);
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
+      background:
+        linear-gradient(90deg, rgba(27,29,31,0.035) 1px, transparent 1px),
+        linear-gradient(rgba(27,29,31,0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 38px 38px;
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    a { color: inherit; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     .shell {
-      width: min(1160px, calc(100% - 40px));
+      width: min(1180px, calc(100% - 36px));
       margin: 0 auto;
     }
 
@@ -1482,25 +1366,24 @@ const COREHUB_HTML = `<!DOCTYPE html>
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 22px 0;
-      border-bottom: 1px solid var(--line);
+      min-height: 76px;
+      gap: 18px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      text-decoration: none;
-      font-weight: 750;
+      font-weight: 850;
     }
 
     .mark {
       display: grid;
       place-items: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: #111827;
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: var(--text);
       color: #fff;
       font-size: 13px;
       letter-spacing: 0;
@@ -1509,176 +1392,220 @@ const COREHUB_HTML = `<!DOCTYPE html>
     .nav {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 8px;
       color: var(--muted);
       font-size: 14px;
+      font-weight: 750;
     }
 
     .nav a {
-      text-decoration: none;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0 12px;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      background: rgba(255,255,255,0.72);
+      color: var(--text);
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-      gap: 42px;
-      align-items: center;
-      padding: 70px 0 54px;
+      min-height: min(760px, calc(84svh - 76px));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 28px 0 46px;
     }
 
     .eyebrow {
-      margin: 0 0 18px;
-      color: var(--accent);
+      margin: 0 0 20px;
+      color: var(--accent-dark);
       font-size: 13px;
-      font-weight: 750;
+      font-weight: 850;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     h1 {
       margin: 0;
-      max-width: 760px;
-      font-size: clamp(44px, 7vw, 76px);
-      line-height: 0.95;
+      max-width: 980px;
+      font-size: clamp(58px, 10vw, 132px);
+      line-height: 0.86;
       letter-spacing: 0;
+      font-weight: 950;
     }
 
     .lead {
       margin: 24px 0 0;
-      max-width: 680px;
+      max-width: 760px;
       color: var(--muted);
-      font-size: 19px;
-      line-height: 1.65;
+      font-size: clamp(18px, 2vw, 23px);
+      line-height: 1.55;
+      font-weight: 600;
     }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
-    }
-
-    .button.primary {
-      border-color: #111827;
-      background: #111827;
-      color: #fff;
-    }
-
-    .panel {
+    .search-panel {
+      width: min(940px, 100%);
+      margin-top: 32px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: rgba(255,255,255,0.88);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .panel-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--line);
-      background: var(--surface-2);
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .row {
+    .search-row {
       display: grid;
-      grid-template-columns: 90px minmax(0, 1fr);
-      gap: 16px;
-      padding: 18px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .row:last-child { border-bottom: 0; }
-
-    .kind {
-      width: fit-content;
-      height: 28px;
-      padding: 0 10px;
-      border-radius: 999px;
-      display: inline-flex;
+      grid-template-columns: 1fr auto;
       align-items: center;
-      background: #e0f2fe;
-      color: #075985;
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .kind.plugin {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .entry-title {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .entry-copy {
-      margin: 6px 0 0;
-      color: var(--muted);
-      line-height: 1.5;
-      font-size: 14px;
-    }
-
-    .section {
-      padding: 34px 0;
-    }
-
-    .section h2 {
-      margin: 0 0 14px;
-      font-size: 28px;
-      letter-spacing: 0;
-    }
-
-    .section-intro {
-      max-width: 720px;
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .directory-toolbar {
-      display: grid;
-      grid-template-columns: minmax(260px, 1fr) auto;
-      gap: 16px;
-      align-items: center;
-      margin-top: 22px;
+      gap: 12px;
+      padding: 12px;
     }
 
     .search-box {
       width: 100%;
-      min-height: 44px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--surface);
+      min-width: 0;
+      min-height: 58px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
       color: var(--text);
       font: inherit;
-      padding: 0 14px;
-      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+      font-size: 18px;
+      font-weight: 750;
+      padding: 0 16px;
     }
 
     .search-box:focus {
-      outline: 2px solid rgba(15, 118, 110, 0.2);
-      border-color: var(--accent);
+      outline: 2px solid rgba(221, 63, 47, 0.22);
+      background: #fff;
+    }
+
+    .search-button {
+      min-height: 48px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--text);
+      color: #fff;
+      padding: 0 22px;
+      font: inherit;
+      font-weight: 850;
+    }
+
+    .prompt-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 12px 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: #4c5560;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      width: min(940px, 100%);
+      margin-top: 26px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.72);
+      padding: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 10px 0 34px;
+    }
+
+    .quick-group {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 18px;
+    }
+
+    .quick-group h2 {
+      margin: 0 0 14px;
+      font-size: 16px;
+    }
+
+    .quick-group a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 34px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .quick-group a:first-of-type {
+      border-top: 0;
+    }
+
+    .section {
+      padding: 36px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: 0;
+    }
+
+    .section-intro {
+      max-width: 640px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 600;
     }
 
     .filter-group {
@@ -1691,12 +1618,12 @@ const COREHUB_HTML = `<!DOCTYPE html>
     .filter-button {
       min-height: 38px;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 999px;
       background: var(--surface);
       color: var(--muted);
       font: inherit;
       font-size: 13px;
-      font-weight: 750;
+      font-weight: 800;
       padding: 0 12px;
       cursor: pointer;
     }
@@ -1707,38 +1634,37 @@ const COREHUB_HTML = `<!DOCTYPE html>
     }
 
     .filter-button.active {
-      border-color: #111827;
-      background: #111827;
+      border-color: var(--text);
+      background: var(--text);
       color: #fff;
     }
 
     .filter-button.active span {
-      color: #dbeafe;
+      color: #fff;
     }
 
     .directory-status {
-      margin: 14px 0 0;
+      margin: 0 0 14px;
       color: var(--muted);
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .entry-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 16px;
-      margin-top: 18px;
     }
 
     .entry-card {
       display: flex;
       flex-direction: column;
-      min-height: 360px;
+      min-height: 408px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: rgba(255,255,255,0.92);
       padding: 18px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+      box-shadow: 0 10px 30px rgba(51, 43, 34, 0.06);
     }
 
     .entry-card[hidden] {
@@ -1750,27 +1676,58 @@ const COREHUB_HTML = `<!DOCTYPE html>
       justify-content: space-between;
       gap: 12px;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
+    }
+
+    .kind {
+      width: fit-content;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      background: #eaf2ff;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: lowercase;
+    }
+
+    .kind.plugin {
+      background: #e6f6ed;
+      color: var(--green);
     }
 
     .entry-card h3 {
       margin: 0;
-      font-size: 19px;
-      line-height: 1.25;
+      font-size: 20px;
+      line-height: 1.2;
     }
 
     .entry-summary {
-      margin: 10px 0 0;
+      margin: 11px 0 0;
       color: var(--muted);
       line-height: 1.55;
       font-size: 14px;
     }
 
     .review {
-      color: var(--accent);
+      color: var(--accent-dark);
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 850;
       text-transform: uppercase;
+    }
+
+    .install-command {
+      display: block;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #1b1d1f;
+      color: #f8fafc;
+      padding: 12px;
+      font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      overflow-wrap: anywhere;
     }
 
     .entry-meta {
@@ -1789,7 +1746,7 @@ const COREHUB_HTML = `<!DOCTYPE html>
     .entry-meta dt {
       color: var(--muted);
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 850;
       text-transform: uppercase;
     }
 
@@ -1816,17 +1773,17 @@ const COREHUB_HTML = `<!DOCTYPE html>
       border-radius: 999px;
       padding: 0 9px;
       font-size: 12px;
-      font-weight: 750;
+      font-weight: 800;
     }
 
     .tag-list span {
-      background: #f1f5f9;
-      color: #334155;
+      background: var(--surface-soft);
+      color: #4c5560;
     }
 
     .capability-list span {
-      background: #ecfdf5;
-      color: #166534;
+      background: #e6f6ed;
+      color: var(--green);
     }
 
     .entry-links {
@@ -1835,12 +1792,11 @@ const COREHUB_HTML = `<!DOCTYPE html>
       margin-top: auto;
       padding-top: 18px;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 850;
     }
 
     .entry-links a {
-      color: var(--accent-2);
-      text-decoration: none;
+      color: var(--blue);
     }
 
     .empty-state {
@@ -1852,9 +1808,9 @@ const COREHUB_HTML = `<!DOCTYPE html>
       padding: 22px;
     }
 
-    .grid {
+    .surface-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
       margin-top: 20px;
     }
@@ -1886,32 +1842,95 @@ const COREHUB_HTML = `<!DOCTYPE html>
       font-size: 13px;
     }
 
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101112;
+        --surface: #181a1d;
+        --surface-soft: #22252a;
+        --text: #f4f1eb;
+        --muted: #a7adb5;
+        --line: #30343a;
+        --accent: #ff6b57;
+        --accent-dark: #ff947f;
+        --green: #62d18f;
+        --blue: #8db4ff;
+        --yellow: #ffd37a;
+        --shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      body {
+        background:
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          var(--bg);
+        background-size: 38px 38px;
+      }
+
+      .search-panel,
+      .stat,
+      .entry-card {
+        background: rgba(24,26,29,0.92);
+      }
+
+      .search-box:focus {
+        background: #181a1d;
+      }
+    }
+
     @media (max-width: 860px) {
+      .shell {
+        width: min(320px, calc(100dvw - 36px));
+        padding: 0;
+      }
+
       .topbar {
-        align-items: flex-start;
-        gap: 18px;
         flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 16px 0;
       }
 
       .nav {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        max-width: 100%;
+        overflow-x: auto;
+        padding-bottom: 2px;
       }
 
       .hero {
-        grid-template-columns: 1fr;
-        padding-top: 42px;
+        min-height: auto;
+        padding: 44px 0 34px;
       }
 
-      .grid {
+      h1 {
+        max-width: 100%;
+        font-size: clamp(38px, 11vw, 44px);
+        line-height: 0.92;
+        overflow-wrap: break-word;
+      }
+
+      .stats,
+      .quick-links,
+      .surface-grid {
         grid-template-columns: 1fr;
       }
 
-      .directory-toolbar {
+      .search-row {
         grid-template-columns: 1fr;
       }
 
-      .filter-group {
-        justify-content: flex-start;
+      .search-button {
+        width: 100%;
+      }
+
+      .prompt-chips {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
       }
 
       .entry-grid {
@@ -1928,49 +1947,78 @@ const COREHUB_HTML = `<!DOCTYPE html>
         <span>CoreBlow</span>
       </a>
       <nav class="nav" aria-label="CoreHub navigation">
-        <a href="/corehub">CoreHub</a>
+        <a href="#directory">Skills</a>
+        <a href="#directory">Plugins</a>
+        <a href="/corehub/publisher">Publishers</a>
+        <a href="https://docs.coreblow.com/corehub/quickstart">Docs</a>
         <a href="https://github.com/coreblow/corehub">GitHub</a>
-        <a href="https://docs.coreblow.com">Docs</a>
-        <a href="/health">Status</a>
       </nav>
     </header>
 
     <main>
       <section class="hero">
-        <div>
-          <p class="eyebrow">CoreHub Directory</p>
-          <h1>Skills and plugins for the CoreBlow runtime.</h1>
-          <p class="lead">
-            CoreHub is the public directory contract for CoreBlow skills, plugins, providers, channels, review metadata, and compatibility information.
-          </p>
-          <div class="actions">
-            <a class="button primary" href="https://github.com/coreblow/corehub">View Repository</a>
-            <a class="button" href="/corehub/catalog.json">Catalog JSON</a>
+        <p class="eyebrow">Built by the CoreBlow community.</p>
+        <h1>Equip. Install. Ship. Build.</h1>
+        <p class="lead">
+          Discover reviewed skills, plugins, providers, and channel integrations for the CoreBlow runtime.
+          Every listing keeps publisher identity, review state, artifact metadata, and install commands in reach.
+        </p>
+
+        <div class="search-panel" role="search" aria-label="Search CoreHub">
+          <div class="search-row">
+            <input class="search-box" id="corehub-search" type="search" placeholder="Search plugins, skills, publishers, capabilities" aria-label="Search CoreHub entries" autocomplete="off" />
+            <button class="search-button" type="button" id="corehub-search-button">Search</button>
+          </div>
+          <div class="prompt-chips" aria-label="Suggested CoreHub searches">
+            <button class="chip" type="button" data-query="plugin">plugin</button>
+            <button class="chip" type="button" data-query="skill">skill</button>
+            <button class="chip" type="button" data-query="security">security</button>
+            <button class="chip" type="button" data-query="runtime">runtime</button>
+            <button class="chip" type="button" data-query="compatibility">compatibility</button>
           </div>
         </div>
 
-        <aside class="panel" aria-label="Featured CoreHub entries">
-          <div class="panel-head">
-            <span>Featured entries</span>
-            <span>verified</span>
-          </div>
-          ${COREHUB_CATALOG.map(
-            (entry) => `<div class="row">
-              <div><span class="kind ${entry.kind}">${entry.kind}</span></div>
-              <div>
-                <p class="entry-title">${entry.name}</p>
-                <p class="entry-copy">${entry.summary}</p>
-              </div>
-            </div>`,
-          ).join("")}
-        </aside>
+        <div class="stats" aria-label="CoreHub stats">
+          <div class="stat"><strong>${coreHubKindCounts.all}</strong><span>tools</span></div>
+          <div class="stat"><strong>${coreHubPublisherCount}</strong><span>publishers</span></div>
+          <div class="stat"><strong>${coreHubVersionCount}</strong><span>versions</span></div>
+          <div class="stat"><strong>${coreHubVerifiedCount}</strong><span>verified</span></div>
+        </div>
       </section>
 
-      <section class="section" aria-label="CoreHub directory">
-        <h2>Directory</h2>
-        <p class="section-intro">Browse reviewed CoreBlow skills, plugins, providers, and channels from the canonical CoreHub catalog.</p>
-        <div class="directory-toolbar">
-          <input class="search-box" id="corehub-search" type="search" placeholder="Search CoreHub" aria-label="Search CoreHub entries" autocomplete="off" />
+      <section class="quick-links" aria-label="CoreHub quick links">
+        <div class="quick-group">
+          <h2>Browse</h2>
+          <a href="#directory">Skills <span>${coreHubKindCounts.skill}</span></a>
+          <a href="#directory">Plugins <span>${coreHubKindCounts.plugin}</span></a>
+          <a href="/corehub/api/v1">Registry API <span>v1</span></a>
+        </div>
+        <div class="quick-group">
+          <h2>Publish</h2>
+          <a href="/corehub/publisher">Publisher Portal <span>open</span></a>
+          <a href="https://docs.coreblow.com/corehub/cli">CLI Publish <span>docs</span></a>
+          <a href="/corehub/catalog.json">Catalog JSON <span>raw</span></a>
+        </div>
+        <div class="quick-group">
+          <h2>Community</h2>
+          <a href="https://github.com/coreblow/corehub">GitHub <span>repo</span></a>
+          <a href="https://github.com/coreblow/corehub/issues">Issues <span>triage</span></a>
+          <a href="https://github.com/coreblow/corehub/security/policy">Security <span>policy</span></a>
+        </div>
+        <div class="quick-group">
+          <h2>Platform</h2>
+          <a href="/health">Website Status <span>ok</span></a>
+          <a href="/corehub/api/v1/packages/plugin-lab/download?redirect=false">Signed Read <span>${coreHubDownloadableCount}</span></a>
+          <a href="https://docs.coreblow.com/corehub/trust-model">Trust Model <span>docs</span></a>
+        </div>
+      </section>
+
+      <section class="section" id="directory" aria-label="CoreHub directory">
+        <div class="section-head">
+          <div>
+            <h2>Browse</h2>
+            <p class="section-intro">Search the canonical CoreHub catalog. Results update locally and stay aligned with the served Registry API.</p>
+          </div>
           <div class="filter-group" aria-label="Filter CoreHub entries">
             ${coreHubFilterHtml}
           </div>
@@ -1983,8 +2031,13 @@ const COREHUB_HTML = `<!DOCTYPE html>
       </section>
 
       <section class="section" aria-label="CoreHub capabilities">
-        <h2>Directory surfaces</h2>
-        <div class="grid">
+        <div class="section-head">
+          <div>
+            <h2>Platform</h2>
+            <p class="section-intro">CoreHub keeps discovery pretty on the surface and strict underneath: publisher identity, signed downloads, compatibility metadata, and auditable APIs.</p>
+          </div>
+        </div>
+        <div class="surface-grid">
           <article class="tile">
             <h3>Skills</h3>
             <p>Agent instruction packs with declared runtime requirements, review metadata, and deterministic fingerprints.</p>
@@ -1997,6 +2050,10 @@ const COREHUB_HTML = `<!DOCTYPE html>
             <h3>Compatibility</h3>
             <p>Version, platform, provider, channel, and review state data designed for CI and future hosted APIs.</p>
           </article>
+          <article class="tile">
+            <h3>Downloads</h3>
+            <p>Signed read metadata points clients to external artifact URLs while CoreHub remains the trust boundary.</p>
+          </article>
         </div>
       </section>
     </main>
@@ -2005,10 +2062,12 @@ const COREHUB_HTML = `<!DOCTYPE html>
   </div>
   <script>
     const searchInput = document.querySelector("#corehub-search");
+    const searchButton = document.querySelector("#corehub-search-button");
     const statusNode = document.querySelector("#corehub-status");
     const emptyNode = document.querySelector("#corehub-empty");
     const cards = Array.from(document.querySelectorAll(".entry-card"));
     const buttons = Array.from(document.querySelectorAll(".filter-button"));
+    const chips = Array.from(document.querySelectorAll(".chip"));
     let activeKind = "all";
 
     function updateDirectory() {
@@ -2040,7 +2099,1313 @@ const COREHUB_HTML = `<!DOCTYPE html>
     });
 
     searchInput.addEventListener("input", updateDirectory);
+    searchButton.addEventListener("click", () => document.querySelector("#directory").scrollIntoView({ block: "start" }));
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        searchInput.value = chip.dataset.query || "";
+        updateDirectory();
+        document.querySelector("#directory").scrollIntoView({ block: "start" });
+      });
+    });
     updateDirectory();
+  </script>
+</body>
+</html>`;
+
+const COREHUB_SOVEREIGN_STORE_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoreHub</title>
+  <meta name="description" content="CoreHub is the CoreBlow directory for skills, plugins, providers, channels, review metadata, and compatibility information." />
+  <script>
+    (() => {
+      try {
+        const stored = localStorage.getItem("corehub-theme") || "system";
+        const resolved = stored === "system"
+          ? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
+          : stored;
+        document.documentElement.dataset.corehubTheme = resolved;
+        document.documentElement.dataset.corehubThemeMode = stored;
+      } catch {
+        document.documentElement.dataset.corehubTheme = "dark";
+        document.documentElement.dataset.corehubThemeMode = "system";
+      }
+    })();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: rgba(255, 255, 255, 0.44);
+      --surface-soft: rgba(248, 244, 255, 0.36);
+      --ink: #17132f;
+      --ink-soft: #555a72;
+      --muted: #697088;
+      --line: rgba(132, 111, 255, 0.22);
+      --line-strong: rgba(132, 111, 255, 0.38);
+      --accent: #5f46ff;
+      --accent-soft: rgba(233, 227, 255, 0.62);
+      --accent-line: rgba(132, 111, 255, 0.34);
+      --opera-violet: #5021ff;
+      --opera-violet-soft: rgba(233, 227, 255, 0.62);
+      --radius: 8px;
+      --ui-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html { min-height: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 86% 28%, rgba(80, 33, 255, 0.2), transparent 32%),
+        radial-gradient(circle at 32% 42%, rgba(95, 70, 255, 0.09), transparent 34%),
+        radial-gradient(circle at 70% 82%, rgba(120, 94, 255, 0.1), transparent 36%),
+        linear-gradient(180deg, #ffffff 0%, #ffffff 54%, #f4f1ff 100%);
+      background-repeat: no-repeat;
+      color: var(--ink);
+      font-family: var(--ui-font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.42);
+      backdrop-filter: blur(26px) saturate(160%);
+      -webkit-backdrop-filter: blur(26px) saturate(160%);
+      box-shadow: 0 14px 42px rgba(80, 33, 255, 0.05);
+    }
+
+    .navbar-inner {
+      width: min(1400px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .navbar-top {
+      min-height: 62px;
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-mobile {
+      display: none;
+    }
+
+    .nav-mobile-trigger,
+    .navbar-search-mobile-trigger,
+    .theme-btn {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      background: #050505;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      box-shadow: 0 1px 5px rgba(32, 28, 26, 0.18);
+    }
+
+    .brand-name {
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .navbar-spacer {
+      min-width: 0;
+    }
+
+    .hero-search input::placeholder {
+      color: rgba(37, 43, 66, 0.55);
+      opacity: 1;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-search-mobile-trigger {
+      display: none;
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 3px 8px;
+      color: var(--muted);
+      backdrop-filter: blur(18px) saturate(155%);
+      -webkit-backdrop-filter: blur(18px) saturate(155%);
+    }
+
+    .theme-toggle button {
+      width: 24px;
+      height: 24px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 6px;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .theme-toggle button.is-active {
+      background: rgba(95, 70, 255, 0.12);
+      color: var(--accent);
+      box-shadow: inset 0 0 0 1px rgba(95, 70, 255, 0.18);
+    }
+
+    .github-button {
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      backdrop-filter: blur(18px) saturate(155%);
+      -webkit-backdrop-filter: blur(18px) saturate(155%);
+    }
+
+    .navbar-tabs {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      border-top: 1px solid transparent;
+    }
+
+    .navbar-tabs-primary,
+    .navbar-tabs-secondary {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .navbar-tabs-primary {
+      padding-right: 28px;
+      border-right: 1px solid var(--line);
+    }
+
+    .navbar-tab {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .home-main {
+      flex: 1;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 412px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 78% 48%, rgba(80, 33, 255, 0.22), transparent 42%),
+        radial-gradient(circle at 50% 38%, rgba(95, 70, 255, 0.1), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(247, 244, 255, 0.64));
+      background-repeat: no-repeat;
+      text-align: center;
+      padding: 54px 20px 58px;
+    }
+
+    .hero-label {
+      border: 0;
+      background: transparent;
+      color: #7b7f93;
+      padding: 0;
+      margin: 0 0 24px;
+      font: 800 12px/1 var(--ui-font);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .headline {
+      margin: 0;
+      color: #2d255f;
+      font: 850 clamp(44px, 5vw, 64px)/1.02 var(--ui-font);
+      letter-spacing: -0.025em;
+    }
+
+    .headline .core {
+      color: var(--accent);
+      text-shadow: none;
+    }
+
+    .headline .sep {
+      margin: 0 12px;
+      color: rgba(132, 111, 255, 0.38);
+      font-weight: 500;
+    }
+
+    .sub {
+      margin: 22px 0 0;
+      color: #3c4055;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .hero-search-container {
+      width: min(920px, 100%);
+      margin-top: 34px;
+      border-radius: 999px;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.42), rgba(104, 127, 255, 0.12) 52%, rgba(255, 255, 255, 0.18)),
+        rgba(244, 239, 255, 0.2);
+      border: 1px solid rgba(149, 177, 255, 0.5);
+      backdrop-filter: blur(28px) saturate(175%);
+      -webkit-backdrop-filter: blur(28px) saturate(175%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.64),
+        inset 0 -1px 0 rgba(95, 70, 255, 0.08),
+        0 0 0 1px rgba(80, 33, 255, 0.08),
+        0 24px 60px rgba(80, 33, 255, 0.15);
+      padding: 4px;
+      overflow: hidden;
+    }
+
+    .hero-search {
+      min-height: 66px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 0 4px 0 26px;
+      color: var(--ink);
+    }
+
+    .hero-search input {
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    .hero-search input::placeholder {
+      color: rgba(37, 43, 66, 0.55);
+    }
+
+    .hero-search-go {
+      min-width: 138px;
+      min-height: 58px;
+      border: 1px solid rgba(128, 173, 255, 0.58);
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(124, 142, 221, 0.18)),
+        rgba(96, 118, 190, 0.24);
+      color: #ffffff;
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 28px;
+      font-size: 25px;
+      font-weight: 400;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.52),
+        0 12px 26px rgba(104, 180, 255, 0.18);
+      cursor: pointer;
+    }
+
+    .hero-search-go-label {
+      display: inline;
+    }
+
+    .hero-search-clear {
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 300;
+      transform: translateY(-1px);
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .suggestion {
+      min-height: 34px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.24);
+      color: #3c4055;
+      padding: 0 15px;
+      font-size: 14px;
+      cursor: pointer;
+      backdrop-filter: blur(16px) saturate(145%);
+      -webkit-backdrop-filter: blur(16px) saturate(145%);
+    }
+
+    .featured {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 78% 6%, rgba(120, 94, 255, 0.14), transparent 34%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.24), rgba(247, 239, 255, 0.16) 52%, rgba(255, 255, 255, 0.22)),
+        rgba(247, 244, 255, 0.14);
+      backdrop-filter: blur(18px) saturate(135%);
+      -webkit-backdrop-filter: blur(18px) saturate(135%);
+      padding: 36px 0 46px;
+    }
+
+    .featured-inner {
+      width: min(1330px, calc(100% - 96px));
+      margin: 0 auto;
+    }
+
+    .featured-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .featured-title {
+      margin: 0;
+      color: #534a45;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .featured-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #534a45;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .featured-view {
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .featured-arrow {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(160, 177, 255, 0.34);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.28);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+    }
+
+    .featured-rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(306px, 32%);
+      gap: 16px;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: x proximity;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .featured-rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    .featured-card {
+      min-height: 232px;
+      border: 1px solid rgba(162, 176, 255, 0.42);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.44), rgba(248, 244, 255, 0.2)),
+        rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(24px) saturate(165%);
+      -webkit-backdrop-filter: blur(24px) saturate(165%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.62),
+        inset 0 -1px 0 rgba(95, 70, 255, 0.06),
+        0 18px 42px rgba(83, 63, 145, 0.1);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      scroll-snap-align: start;
+    }
+
+    .featured-card.compact {
+      min-height: 174px;
+      padding: 24px;
+    }
+
+    .featured-card h3 {
+      margin: 0;
+      color: #2b2725;
+      font-size: 16px;
+      font-weight: 760;
+    }
+
+    .featured-byline {
+      margin: 4px 0 16px;
+      color: #867a72;
+      font-size: 13px;
+    }
+
+    .featured-kind {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      width: fit-content;
+      border: 1px solid rgba(162, 176, 255, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.24);
+      color: #6f7182;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    .featured-summary {
+      margin: 16px 0 0;
+      color: #62564e;
+      font-size: 13px;
+      line-height: 1.48;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .featured-card-foot {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-top: 22px;
+      color: #958981;
+      font-size: 12px;
+    }
+
+    .featured-card.compact .featured-card-foot {
+      margin-top: 18px;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .featured-grid + .featured-head {
+      margin-top: 52px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+
+    .featured-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .featured-install {
+      margin-left: auto;
+      min-height: 34px;
+      border: 1px solid rgba(132, 111, 255, 0.36);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.32), rgba(233, 227, 255, 0.26)),
+        rgba(233, 227, 255, 0.24);
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 720;
+      cursor: pointer;
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+    }
+
+    .categories {
+      width: min(1330px, calc(100% - 96px));
+      margin: 0 auto;
+      padding: 40px 0 24px;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: center;
+    }
+
+    .cat-item {
+      min-height: 76px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 0 24px;
+      color: var(--ink);
+    }
+
+    .cat-item + .cat-item {
+      border-left: 1px solid var(--line);
+    }
+
+    .cat-icon {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--accent-line);
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(233, 227, 255, 0.3)),
+        var(--accent-soft);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+    }
+
+    .cat-name {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .cat-desc {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .cat-arrow {
+      display: none;
+      color: var(--muted);
+    }
+
+    .proof-bar {
+      width: min(920px, calc(100% - 96px));
+      min-height: 88px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 42px;
+      color: var(--ink);
+    }
+
+    .proof-item {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .proof-num {
+      font: 800 22px/1 var(--ui-font);
+      letter-spacing: -0.02em;
+    }
+
+    .proof-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .proof-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--line);
+    }
+
+    .site-footer {
+      margin-top: 128px;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.34);
+      backdrop-filter: blur(24px) saturate(145%);
+      -webkit-backdrop-filter: blur(24px) saturate(145%);
+    }
+
+    .site-footer-inner {
+      width: min(1080px, calc(100% - 96px));
+      margin: 0 auto;
+      padding: 28px 0 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 54px;
+    }
+
+    .footer-col-title {
+      margin: 0 0 12px;
+      color: #3c4055;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .footer-col-links {
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-col-links a {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    html[data-corehub-theme="light"],
+    html[data-corehub-theme="light"] :root {
+      --surface: rgba(255, 255, 255, 0.48);
+      --surface-soft: rgba(248, 244, 255, 0.38);
+      --ink: #17132f;
+      --ink-soft: #555a72;
+      --muted: #697088;
+      --line: rgba(132, 111, 255, 0.16);
+      --line-strong: rgba(132, 111, 255, 0.28);
+      --accent: #5f46ff;
+      --accent-soft: rgba(233, 227, 255, 0.62);
+      --accent-line: rgba(132, 111, 255, 0.34);
+    }
+
+    html[data-corehub-theme="light"] body {
+      background:
+        radial-gradient(circle at 86% 28%, rgba(80, 33, 255, 0.16), transparent 32%),
+        radial-gradient(circle at 42% 46%, rgba(95, 70, 255, 0.07), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #ffffff 54%, #f4f1ff 100%);
+      background-repeat: no-repeat;
+    }
+
+    html[data-corehub-theme="light"] .navbar,
+    html[data-corehub-theme="light"] .site-footer {
+      background: rgba(255, 255, 255, 0.42);
+    }
+
+    html[data-corehub-theme="light"] .brand-mark {
+      background: #050505;
+      color: #fff;
+    }
+
+    html[data-corehub-theme="light"] .hero {
+      background:
+        radial-gradient(circle at 78% 48%, rgba(80, 33, 255, 0.18), transparent 42%),
+        radial-gradient(circle at 50% 38%, rgba(95, 70, 255, 0.075), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(247, 244, 255, 0.64));
+      background-repeat: no-repeat;
+    }
+
+    html[data-corehub-theme="light"] .hero-label,
+    html[data-corehub-theme="light"] .sub,
+    html[data-corehub-theme="light"] .featured-summary {
+      color: var(--muted);
+    }
+
+    html[data-corehub-theme="light"] .headline {
+      color: #2d255f;
+    }
+
+    html[data-corehub-theme="light"] .hero-search-container,
+    html[data-corehub-theme="light"] .featured-card {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.44), rgba(248, 244, 255, 0.2)),
+        rgba(255, 255, 255, 0.18);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.62),
+        0 18px 42px rgba(83, 63, 145, 0.1);
+    }
+
+    html[data-corehub-theme="light"] .hero-search,
+    html[data-corehub-theme="light"] .hero-search input {
+      color: var(--ink);
+    }
+
+    html[data-corehub-theme="light"] .hero-search input::placeholder {
+      color: rgba(37, 43, 66, 0.55);
+    }
+
+    html[data-corehub-theme="light"] .suggestion,
+    html[data-corehub-theme="light"] .theme-toggle,
+    html[data-corehub-theme="light"] .github-button,
+    html[data-corehub-theme="light"] .featured-arrow {
+      background: rgba(255, 255, 255, 0.66);
+    }
+
+    html[data-corehub-theme="light"] .featured {
+      background:
+        radial-gradient(circle at 78% 6%, rgba(120, 94, 255, 0.1), transparent 34%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.24), rgba(247, 239, 255, 0.16) 52%, rgba(255, 255, 255, 0.22)),
+        rgba(247, 244, 255, 0.14);
+    }
+
+    html[data-corehub-theme="light"] .featured-title,
+    html[data-corehub-theme="light"] .footer-col-title,
+    html[data-corehub-theme="light"] .featured-card h3 {
+      color: var(--ink);
+    }
+
+    html[data-corehub-theme="light"] .featured-byline,
+    html[data-corehub-theme="light"] .featured-card-foot,
+    html[data-corehub-theme="light"] .featured-actions {
+      color: var(--muted);
+    }
+
+    html[data-corehub-theme="light"] .categories {
+      background: rgba(248, 244, 255, 0.3);
+    }
+
+    .mobile-only {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .navbar-inner {
+        width: 100%;
+      }
+
+      .navbar-top {
+        min-height: 56px;
+        grid-template-columns: auto 1fr;
+        gap: 8px;
+        padding: 8px 10px;
+      }
+
+      .nav-mobile {
+        display: block;
+      }
+
+      .brand,
+      .nav-actions {
+        display: none;
+      }
+
+      .navbar-spacer {
+        min-width: 0;
+      }
+
+      .navbar-tabs {
+        display: none;
+      }
+
+      .hero {
+        min-height: 408px;
+        padding: 50px 20px 40px;
+      }
+
+      .hero-label {
+        margin-bottom: 24px;
+        font-size: 13px;
+        letter-spacing: 0.26em;
+      }
+
+      .headline {
+        width: min(300px, 100%);
+        max-width: 100%;
+        font-size: 30px;
+        line-height: 1.05;
+        overflow-wrap: break-word;
+      }
+
+      .headline .sep {
+        margin: 0 8px;
+      }
+
+      .sub {
+        width: min(340px, 100%);
+        max-width: 100%;
+        font-size: 16px;
+        white-space: normal;
+      }
+
+      .hero-search-container {
+        width: min(100%, calc(100vw - 40px));
+        max-width: calc(100vw - 40px);
+        margin-top: 36px;
+        backdrop-filter: blur(8px) saturate(115%);
+        -webkit-backdrop-filter: blur(8px) saturate(115%);
+      }
+
+      .hero-search {
+        min-height: 66px;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 12px;
+        padding-left: 18px;
+      }
+
+      .hero-search input {
+        width: 100%;
+        font-size: 18px;
+      }
+
+      .hero-search-go {
+        width: 58px;
+        min-width: 58px;
+        padding: 0;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+
+      .hero-search-go-label {
+        display: none;
+      }
+
+      .suggestions {
+        width: 100%;
+        overflow: hidden;
+        gap: 8px;
+      }
+
+      .suggestion {
+        font-size: 13px;
+        padding: 0 13px;
+      }
+
+      .featured {
+        padding: 28px 0 36px;
+      }
+
+      .featured-inner {
+        width: calc(100% - 40px);
+      }
+
+      .featured-head {
+        align-items: flex-start;
+        margin-bottom: 18px;
+      }
+
+      .featured-actions {
+        gap: 6px;
+      }
+
+      .featured-view {
+        display: none;
+      }
+
+      .featured-arrow {
+        width: 34px;
+        height: 34px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+
+      .featured-rail {
+        grid-auto-columns: minmax(282px, 86vw);
+      }
+
+      .featured-grid {
+        grid-template-columns: minmax(282px, 86vw);
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(282px, 86vw);
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+      }
+
+      .featured-grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      .featured-card {
+        min-height: 220px;
+        padding: 20px;
+      }
+
+      .featured-card.compact {
+        min-height: 216px;
+        padding: 20px;
+      }
+
+      .featured-install {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+
+      .featured-grid + .featured-head {
+        margin-top: 42px;
+        padding-top: 28px;
+      }
+
+      .featured-card-foot {
+        gap: 10px;
+      }
+
+      .featured-stat {
+        max-width: 86px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .categories {
+        width: calc(100% - 40px);
+        padding: 32px 0 26px;
+      }
+
+      .categories-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .cat-item {
+        min-height: 72px;
+        padding: 0 24px;
+      }
+
+      .cat-item + .cat-item {
+        border-left: 0;
+      }
+
+      .proof-bar {
+        width: calc(100% - 40px);
+        min-height: 96px;
+        justify-content: flex-start;
+        gap: 24px;
+        overflow: hidden;
+      }
+
+      .proof-num {
+        font-size: 22px;
+      }
+
+      .site-footer {
+        margin-top: 90px;
+      }
+
+      .site-footer-inner {
+        width: calc(100% - 40px);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="navbar">
+      <div class="navbar-inner">
+        <div class="navbar-top">
+          <div class="nav-mobile">
+            <button class="nav-mobile-trigger" type="button" aria-label="Open menu">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+            </button>
+          </div>
+          <a class="brand" href="/corehub">
+            <span class="brand-mark">CB</span>
+            <span class="brand-name">CoreHub</span>
+          </a>
+          <div class="navbar-spacer" aria-hidden="true"></div>
+          <div class="nav-actions">
+            <button class="navbar-search-mobile-trigger" type="button" aria-label="Search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+            </button>
+            <div class="theme-toggle" aria-label="Theme controls">
+              <button type="button" data-theme-mode="system" aria-label="Use system theme" title="System theme">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+              </button>
+              <button type="button" data-theme-mode="light" aria-label="Use light theme" title="Light theme">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+              </button>
+              <button type="button" data-theme-mode="dark" aria-label="Use dark theme" title="Dark theme">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              </button>
+            </div>
+            <a class="github-button" href="https://github.com/coreblow/corehub">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.16 1.18.92-.26 1.9-.38 2.88-.39.98 0 1.96.13 2.88.39 2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.39-5.25 5.67.42.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+              <span>Sign in with GitHub</span>
+            </a>
+          </div>
+        </div>
+        <nav class="navbar-tabs" aria-label="Content types">
+          <div class="navbar-tabs-primary">
+            <a href="/corehub/api/v1/entries?kind=skill" class="navbar-tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.1-3.1a6 6 0 0 1-7.3 7.3l-7.9 7.9a1 1 0 0 1-3-3l7.9-7.9a6 6 0 0 1 7.3-7.3z"/></svg>
+              Skills
+            </a>
+            <a href="/corehub/api/v1/entries?kind=plugin" class="navbar-tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg>
+              Plugins
+            </a>
+          </div>
+          <div class="navbar-tabs-secondary">
+            <a href="/corehub/api/v1/publishers" class="navbar-tab">Publishers</a>
+            <a href="https://docs.coreblow.com/corehub/quickstart" class="navbar-tab">Docs</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="home-main">
+      <section class="hero">
+        <button class="hero-label" type="button">COREBLOW REGISTRY.</button>
+        <h1 class="headline"><span class="core">CoreHub</span> for Skills and Plugins.</h1>
+        <p class="sub">Find trusted CoreBlow extensions, ready in one search.</p>
+        <div class="hero-search-container">
+          <form class="hero-search" role="search" aria-label="Search CoreHub">
+            <span class="hero-search-clear" aria-hidden="true">×</span>
+            <input id="corehub-home-search" autofocus type="text" placeholder="What are you looking for?" />
+            <button class="hero-search-go" type="submit">
+              <span class="hero-search-go-label">Search</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </form>
+        </div>
+        <div class="suggestions">
+          <button class="suggestion" type="button">self-improving agent</button>
+          <button class="suggestion" type="button">GitHub integration</button>
+          <button class="suggestion" type="button">security soul</button>
+          <button class="suggestion" type="button">dashboard builder</button>
+        </div>
+      </section>
+
+      <section class="featured" aria-labelledby="featured-skills-title">
+        <div class="featured-inner">
+          <div class="featured-head">
+            <h2 class="featured-title" id="featured-skills-title">Featured Skills</h2>
+            <div class="featured-actions">
+              <a class="featured-view" href="/corehub/api/v1/entries?kind=skill">
+                View all
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+              <button class="featured-arrow" type="button" aria-label="Previous featured skill">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button class="featured-arrow" type="button" aria-label="Next featured skill">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="featured-rail" aria-label="Featured CoreHub entries">
+            ${coreHubFeaturedHtml}
+          </div>
+          <div class="featured-head">
+            <h2 class="featured-title">Featured Plugins</h2>
+            <div class="featured-actions">
+              <a class="featured-view" href="/corehub/api/v1/entries?kind=plugin">
+                View all
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="featured-grid" aria-label="Featured CoreHub plugins">
+            ${coreHubPluginFeaturedHtml}
+          </div>
+        </div>
+      </section>
+
+      <section class="categories" aria-label="CoreHub categories">
+        <div class="categories-grid">
+          <a href="/corehub/api/v1/entries?kind=skill" class="cat-item">
+            <span class="cat-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.29 7 8.71 5 8.71-5"/></svg></span>
+            <span class="cat-text"><span class="cat-name">Skills</span><span class="cat-desc">Agent skill bundles</span></span>
+            <span class="cat-arrow">›</span>
+          </a>
+          <a href="/corehub/api/v1/entries?kind=plugin" class="cat-item">
+            <span class="cat-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></span>
+            <span class="cat-text"><span class="cat-name">Plugins</span><span class="cat-desc">Gateway plugins</span></span>
+            <span class="cat-arrow">›</span>
+          </a>
+          <a href="/corehub/api/v1/publishers" class="cat-item">
+            <span class="cat-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.74"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></span>
+            <span class="cat-text"><span class="cat-name">Publishers</span><span class="cat-desc">Builders and orgs</span></span>
+            <span class="cat-arrow">›</span>
+          </a>
+        </div>
+      </section>
+
+      <div class="proof-bar" aria-label="CoreHub proof stats">
+        <div class="proof-item"><span class="proof-num">${coreHubKindCounts.all}</span><span class="proof-label">tools</span></div>
+        <span class="proof-sep"></span>
+        <div class="proof-item"><span class="proof-num">${coreHubPublisherCount}</span><span class="proof-label">users</span></div>
+        <span class="proof-sep"></span>
+        <div class="proof-item"><span class="proof-num">${coreHubDownloadableCount}</span><span class="proof-label">downloads</span></div>
+        <span class="proof-sep"></span>
+        <div class="proof-item"><span class="proof-num">${coreHubVerifiedCount}</span><span class="proof-label">avg rating</span></div>
+      </div>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="site-footer-inner">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4 class="footer-col-title">Browse</h4>
+            <div class="footer-col-links">
+              <a href="/corehub/api/v1/entries?kind=skill">Skills</a>
+              <a href="/corehub/api/v1/entries?kind=plugin">Plugins</a>
+              <a href="/corehub/api/v1">Audits</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Publish</h4>
+            <div class="footer-col-links">
+              <a href="/corehub/publisher">Publish Skill</a>
+              <a href="/corehub/publisher">Publish Plugin</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Community</h4>
+            <div class="footer-col-links">
+              <a href="https://github.com/coreblow/corehub">GitHub</a>
+              <a href="https://coreblow.com">CoreBlow</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Platform</h4>
+            <div class="footer-col-links">
+              <a href="https://workers.cloudflare.com">Deployed on Cloudflare</a>
+              <a href="https://developers.cloudflare.com/d1/">Powered by D1</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script>
+    const forms = Array.from(document.querySelectorAll("form[role='search']"));
+    const heroInput = document.querySelector("#corehub-home-search");
+    const suggestionButtons = Array.from(document.querySelectorAll(".suggestion"));
+    const themeButtons = Array.from(document.querySelectorAll("[data-theme-mode]"));
+    const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
+
+    function resolveTheme(mode) {
+      return mode === "system" ? (themeMedia.matches ? "light" : "dark") : mode;
+    }
+
+    function applyCoreHubTheme(mode) {
+      const selectedMode = ["system", "light", "dark"].includes(mode) ? mode : "system";
+      document.documentElement.dataset.corehubThemeMode = selectedMode;
+      document.documentElement.dataset.corehubTheme = resolveTheme(selectedMode);
+      try {
+        localStorage.setItem("corehub-theme", selectedMode);
+      } catch {
+        // Ignore storage failures; the current page can still switch theme.
+      }
+      themeButtons.forEach((button) => {
+        const active = button.dataset.themeMode === selectedMode;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+    }
+
+    function searchCoreHub(value) {
+      const query = String(value || "").trim();
+      if (!query) return;
+      window.location.href = "/corehub/api/v1/search?q=" + encodeURIComponent(query);
+    }
+
+    forms.forEach((form) => {
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        searchCoreHub(form.querySelector("input")?.value);
+      });
+    });
+
+    suggestionButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (heroInput) heroInput.value = button.textContent.trim();
+        searchCoreHub(button.textContent);
+      });
+    });
+
+    themeButtons.forEach((button) => {
+      button.addEventListener("click", () => applyCoreHubTheme(button.dataset.themeMode));
+    });
+
+    themeMedia.addEventListener("change", () => {
+      if (document.documentElement.dataset.corehubThemeMode === "system") {
+        applyCoreHubTheme("system");
+      }
+    });
+
+    applyCoreHubTheme(document.documentElement.dataset.corehubThemeMode || "system");
   </script>
 </body>
 </html>`;
@@ -2048,6 +3413,15 @@ const COREHUB_HTML = `<!DOCTYPE html>
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname === '/install.sh') {
+      return new Response(INSTALL_SH, {
+        headers: {
+          'Content-Type': 'text/plain;charset=UTF-8',
+          'Cache-Control': 'public, max-age=300',
+        },
+      });
+    }
 
     if (url.pathname === '/health') {
       return new Response(JSON.stringify({ status: 'ok' }), {
@@ -2098,7 +3472,7 @@ export default {
     }
 
     if (url.pathname === '/corehub' || url.pathname === '/corehub/') {
-      return new Response(COREHUB_HTML, {
+      return new Response(COREHUB_SOVEREIGN_STORE_HTML, {
         headers: {
           'Content-Type': 'text/html;charset=UTF-8',
           'Cache-Control': 'public, max-age=300',

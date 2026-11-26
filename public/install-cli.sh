@@ -10,11 +10,11 @@ cat << 'EOF'
  / /   / __ \/ ___/ _ \ __  / / __ \ | /| / / 
 / /___/ /_/ / /  /  __/ /_/ / / /_/ / |/ |/ /  
 \____/\____/_/   \___/_____/_/\____/|__/|__/   
-   Sovereign Autonomous Agent-OS · v2.3.0 GA
+   Sovereign Autonomous Agent-OS · v2.3.1 GA
 EOF
 printf "\033[0m\n"
 
-COREBLOW_VERSION="${COREBLOW_VERSION:-2.3.0}"
+COREBLOW_VERSION="${COREBLOW_VERSION:-2.3.1}"
 
 echo "==> Verifying system prerequisites..."
 if ! command -v node >/dev/null 2>&1; then

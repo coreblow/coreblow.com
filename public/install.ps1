@@ -2,7 +2,7 @@
 # https://coreblow.com
 $ErrorActionPreference = "Stop"
 
-$CoreBlowVersion = if ($env:COREBLOW_VERSION) { $env:COREBLOW_VERSION } else { "2.4.0" }
+$CoreBlowVersion = if ($env:COREBLOW_VERSION) { $env:COREBLOW_VERSION } else { "2.5.0" }
 
 Write-Host @"
    ______               ____  __               
@@ -10,7 +10,7 @@ Write-Host @"
  / /   / __ \/ ___/ _ \ __  / / __ \ | /| / / 
 / /___/ /_/ / /  /  __/ /_/ / / /_/ / |/ |/ /  
 \____/\____/_/   \___/_____/_/\____/|__/|__/   
-   Sovereign Autonomous Agent-OS · v2.4.0 GA
+   Sovereign Autonomous Agent-OS · v2.5.0 GA
 "@ -ForegroundColor Cyan
 Write-Host ""
 

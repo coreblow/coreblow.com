@@ -15,6 +15,15 @@ EOF
 printf "\033[0m\n"
 
 COREBLOW_VERSION="${COREBLOW_VERSION:-2.6.0}"
+COREBLOW_NO_ONBOARD="${COREBLOW_NO_ONBOARD:-0}"
+
+for arg in "$@"; do
+  case "$arg" in
+    --no-onboard)
+      COREBLOW_NO_ONBOARD=1
+      ;;
+  esac
+done
 
 node_is_compatible() {
   if ! command -v node >/dev/null 2>&1; then
@@ -160,8 +169,6 @@ fi
 
 echo ""
 printf "\033[1;32m==> CoreBlow v${COREBLOW_VERSION} successfully installed!\033[0m\n"
-echo "To initialize your sovereign agent workspace and background daemon, run:"
-printf "  \033[1;36mcoreblow onboard --install-daemon\033[0m\n\n"
 
 if [ "$(uname -s)" = "Darwin" ]; then
   echo "==> macOS Companion Options:"
@@ -174,3 +181,13 @@ fi
 echo "To launch the native macOS Studio companion, use Option + Space."
 echo "Documentation: https://docs.coreblow.com"
 echo "CoreHub Store: https://coreblow.com/corehub"
+
+if [ "$COREBLOW_NO_ONBOARD" != "1" ] && [ "${CI:-false}" != "true" ] && [ -t 1 ] && [ -r /dev/tty ] && command -v coreblow >/dev/null 2>&1; then
+  echo ""
+  echo "==> Launching interactive CoreBlow onboarding..."
+  coreblow onboard --install-daemon </dev/tty
+else
+  echo ""
+  echo "To initialize your sovereign agent workspace and background daemon, run:"
+  printf "  \033[1;36mcoreblow onboard --install-daemon\033[0m\n"
+fi

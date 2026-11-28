@@ -1,8 +1,16 @@
 ﻿# CoreBlow Sovereign Agent-OS Windows PowerShell Installer
 # https://coreblow.com
+[CmdletBinding()]
+param(
+  [switch]$NoOnboard,
+  [Parameter(ValueFromRemainingArguments = $true)]
+  [string[]]$RemainingArgs
+)
+
 $ErrorActionPreference = "Stop"
 
 $CoreBlowVersion = if ($env:COREBLOW_VERSION) { $env:COREBLOW_VERSION } else { "2.6.0" }
+$SkipOnboard = $NoOnboard -or ($RemainingArgs -contains "--no-onboard") -or ($env:COREBLOW_NO_ONBOARD -eq "1") -or ($env:CI -eq "true")
 
 Write-Host @"
    ______               ____  __               
@@ -146,11 +154,27 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host ""
 Write-Host "==> CoreBlow v$CoreBlowVersion successfully installed!" -ForegroundColor Green
-Write-Host "To initialize your sovereign agent workspace and background daemon, run:"
-Write-Host "  coreblow onboard --install-daemon" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "==> Windows Desktop Installer:"
 Write-Host "  https://github.com/coreblow/coreblow/releases/download/v$CoreBlowVersion/CoreBlow-$CoreBlowVersion-win-x64.exe" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Documentation: https://docs.coreblow.com"
 Write-Host "CoreHub Store: https://coreblow.com/corehub"
+
+$IsInteractive = $false
+try {
+  $IsInteractive = [Environment]::UserInteractive -and (-not [Console]::IsInputRedirected) -and (-not [Console]::IsOutputRedirected) -and ($Host.Name -ne "ServerRemoteHost")
+} catch {
+  $IsInteractive = $false
+}
+
+$coreblowCmd = Get-Command coreblow -ErrorAction SilentlyContinue
+if ($IsInteractive -and (-not $SkipOnboard) -and $coreblowCmd) {
+  Write-Host ""
+  Write-Host "==> Launching interactive CoreBlow onboarding..." -ForegroundColor Cyan
+  & coreblow onboard --install-daemon
+} else {
+  Write-Host ""
+  Write-Host "To initialize your sovereign agent workspace and background daemon, run:"
+  Write-Host "  coreblow onboard --install-daemon" -ForegroundColor Cyan
+}
